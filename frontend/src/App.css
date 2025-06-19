@@ -1,0 +1,96 @@
+/* src/App.css */
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden; /* Previene el scroll horizontal */
+}
+
+/* Contenedor principal para centrar el contenido */
+.main-content-wrapper {
+    max-width: 1200px; /* Ancho máximo para el contenido central */
+    margin: 0 auto; /* ¡Centra el contenedor horizontalmente! */
+    width: 100%; /* Asegura que el wrapper ocupe todo el ancho disponible */
+    box-sizing: border-box; /* Incluye padding en el ancho total */
+    display: flex; /* Para que las secciones se apilen verticalmente */
+    flex-direction: column;
+}
+
+
+/* Estilos base para secciones */
+/* Ahora, cada sección maneja su propio padding interno */
+section {
+    padding: 40px 20px; /* ¡CORREGIDO! Padding vertical y horizontal para cada sección */
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%; /* La sección debe tomar el 100% del ancho de su contenedor (.main-content-wrapper) */
+    box-sizing: border-box;
+}
+
+h1, h2, h3 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+/* Estilos de respuesta para secciones */
+@media (max-width: 768px) {
+    .main-content-wrapper {
+        padding: 0 15px; /* Ajusta el padding lateral para el wrapper en móviles */
+    }
+
+    section {
+        padding: 30px 15px; /* Ajusta el padding de las secciones en móviles */
+        margin-bottom: 15px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.8em;
+    }
+    h3 {
+        font-size: 1.4em;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+}

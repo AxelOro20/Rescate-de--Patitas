@@ -1,0 +1,180 @@
+/* src/components/Pagina_principal/Footer.css */
+
+.footer {
+    background-color: #343a40; /* Fondo oscuro, consistente con el header */
+    color: white;
+    padding: 40px 20px;
+    margin-top: auto; /* Empuja el footer hacia abajo para ocupar el espacio restante */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* Sombra superior para separarlo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Permite que las secciones se envuelvan */
+    gap: 30px; /* Espacio entre columnas */
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 1200px; /* Alineado con el contenido principal */
+    text-align: left;
+}
+
+.footer-section {
+    flex: 1; /* Permite que las secciones crezcan y se encojan */
+    min-width: 180px; /* Ancho mínimo para cada columna */
+    padding: 10px; /* Pequeño padding interno */
+}
+
+.footer-section.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar el logo en su columna */
+    min-width: 150px; /* Ajuste para el logo */
+}
+
+.footer-logo-text {
+    font-size: 2em; /* Tamaño del texto del logo */
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Si usas una imagen de logo, podrías usar: */
+/* .footer-logo {
+    max-width: 150px;
+    height: auto;
+} */
+
+
+.footer-section h4 {
+    font-size: 1.2em;
+    margin-bottom: 18px;
+    color: #f8f9fa; /* Color ligeramente más claro para los títulos */
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 5px; /* Para el underline */
+}
+
+.footer-section h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px; /* Longitud del subrayado */
+    height: 3px;
+    background-color: #007bff; /* Color del subrayado */
+    border-radius: 2px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px; /* Espacio entre elementos de la lista */
+}
+
+.footer-section ul li a {
+    color: #adb5bd; /* Color gris claro para los enlaces */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.95em;
+}
+
+.footer-section ul li a:hover {
+    color: white; /* Blanco al pasar el mouse */
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #495057; /* Línea separadora */
+    padding-top: 25px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.social-icons {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 25px; /* Espacio entre los iconos */
+}
+
+.social-icons a {
+    color: white;
+    font-size: 2.2em; /* Tamaño de los iconos */
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-icons a:hover {
+    color: #007bff; /* Azul al pasar el mouse */
+    transform: translateY(-3px); /* Pequeño efecto de levantamiento */
+}
+
+.footer-bottom p {
+    font-size: 0.9em;
+    color: #ced4da; /* Texto de copyright más claro */
+    margin: 0;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .footer-top {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .footer-section {
+        min-width: 100%; /* Las secciones ocupan todo el ancho en móviles */
+        padding: 0;
+    }
+
+    .footer-section h4 {
+        margin-bottom: 10px;
+    }
+
+    .footer-section h4::after {
+        left: 50%; /* Centrar el underline */
+        transform: translateX(-50%);
+    }
+
+    .footer-section ul li {
+        margin-bottom: 8px;
+    }
+
+    .social-icons {
+        gap: 20px;
+        font-size: 1.8em;
+    }
+
+    .social-icons a {
+        font-size: 1.8em; /* Ajuste para los iconos en móviles */
+    }
+
+    .footer-bottom p {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 30px 15px;
+    }
+
+    .footer-logo-text {
+        font-size: 1.8em;
+    }
+
+    .social-icons a {
+        font-size: 1.6em;
+    }
+}

@@ -1,0 +1,111 @@
+/* src/components/Pagina_principal/FeaturedAnimals.css */
+
+.featured-animals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3 columnas en pantallas grandes */
+    gap: 30px; /* Espacio entre las tarjetas */
+    padding: 30px 20px; /* Padding interno */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08); /* Sombra ligera */
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.animal-card {
+    background-color: #f8f9fa; /* Fondo ligeramente gris para las tarjetas */
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espacio entre imagen y nombre */
+    align-items: center;
+    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+}
+
+.animal-card:hover {
+    transform: translateY(-8px); /* Efecto de levitación al pasar el mouse */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.animal-image-placeholder {
+    width: 100%;
+    /* Altura basada en una proporción 4:3 para las imágenes */
+    padding-bottom: 75%; /* 3 / 4 = 0.75 */
+    position: relative;
+    background-color: #e9ecef; /* Color de fondo del placeholder */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden; /* Para contener la imagen de placeholder */
+    display: flex; /* Para centrar el texto/icono del placeholder */
+    justify-content: center;
+    align-items: center;
+    color: #6c757d;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Puedes añadir una imagen de placeholder aquí si lo deseas */
+.animal-image-placeholder::before {
+    content: '🐾'; /* Un emoji o icono simple */
+    font-size: 4em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #adb5bd;
+}
+
+
+.animal-card h3 {
+    font-size: 1.8em; /* Título del animal */
+    margin-bottom: 0; /* Eliminar margen inferior si es el último elemento */
+    color: #343a40;
+    font-weight: 600;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .featured-animals {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 2 columnas en tablets */
+        gap: 20px;
+        padding: 20px 15px;
+    }
+
+    .animal-card {
+        padding: 15px;
+    }
+
+    .animal-card h3 {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .featured-animals {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    .animal-card {
+        padding: 15px;
+    }
+
+    .animal-image-placeholder {
+        padding-bottom: 60%; /* Ajustar la proporción para móviles */
+    }
+
+    .animal-image-placeholder::before {
+        font-size: 3em;
+    }
+
+    .animal-card h3 {
+        font-size: 1.4em;
+    }
+}

@@ -1,0 +1,226 @@
+/* src/components/Pagina_principal/NewArrivals.css */
+
+.new-arrivals-section {
+    text-align: center;
+    background-color: #f0f2f5; /* Fondo gris claro para la sección */
+    padding: 60px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.new-arrivals-section h2 {
+    font-size: 2.8em;
+    color: #343a40;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.new-arrivals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+    justify-content: center;
+    align-items: stretch; /* Asegura que las tarjetas se estiren para igualar la altura */
+}
+
+.new-arrival-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 25px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.new-arrival-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.new-arrival-image-placeholder {
+    width: 100%;
+    padding-bottom: 66.66%; /* Proporción 3:2 (200px alto / 300px ancho) */
+    position: relative;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+.new-arrival-image-placeholder::before {
+    content: '🐶🐱'; /* Puedes usar un emoji o cargar una imagen */
+    font-size: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #adb5bd;
+}
+
+
+.new-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ffc107; /* Amarillo */
+    color: #343a40;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.new-arrival-card h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #343a40;
+    text-align: left; /* Alinea el título a la izquierda */
+}
+
+.new-arrival-card p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Permite que la descripción ocupe el espacio disponible */
+}
+
+.animal-details {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que los detalles se envuelvan */
+}
+
+.animal-details span {
+    background-color: #e9f7ef; /* Fondo ligero para los detalles */
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #28a745; /* Texto verde para los detalles */
+    font-weight: 500;
+}
+
+.adopt-button {
+    width: 100%;
+    background-color: #17a2b8; /* Azul claro para el botón de adopción */
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.adopt-button:hover {
+    background-color: #138496;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.view-all-button {
+    margin-top: 40px;
+    background-color: #6c757d; /* Gris para el botón "Ver todos" */
+    padding: 12px 30px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.view-all-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .new-arrivals-section {
+        padding: 40px 15px;
+    }
+
+    .new-arrivals-section h2 {
+        font-size: 2.2em;
+    }
+
+    .new-arrivals-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajuste para tablets */
+        gap: 20px;
+    }
+
+    .new-arrival-card {
+        padding: 20px;
+    }
+
+    .new-arrival-card h3 {
+        font-size: 1.5em;
+    }
+
+    .new-arrival-image-placeholder {
+        padding-bottom: 75%; /* Ajuste de proporción */
+    }
+
+    .adopt-button, .view-all-button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .new-arrivals-section {
+        padding: 30px 10px;
+    }
+
+    .new-arrivals-section h2 {
+        font-size: 1.8em;
+    }
+
+    .new-arrivals-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+        gap: 15px;
+    }
+
+    .new-arrival-card {
+        padding: 15px;
+    }
+
+    .new-arrival-image-placeholder {
+        padding-bottom: 60%; /* Ajuste de proporción para móviles */
+    }
+    
+    .new-arrival-image-placeholder::before {
+        font-size: 2.5em;
+    }
+
+    .new-badge {
+        font-size: 0.75em;
+        padding: 4px 8px;
+    }
+
+    .new-arrival-card h3 {
+        font-size: 1.4em;
+    }
+
+    .animal-details {
+        font-size: 0.8em;
+        gap: 10px;
+    }
+
+    .adopt-button, .view-all-button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+}

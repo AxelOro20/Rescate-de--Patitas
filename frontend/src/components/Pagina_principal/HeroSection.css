@@ -1,0 +1,126 @@
+/* src/components/Pagina_principal/HeroSection.css */
+
+.hero-section {
+    position: relative;
+    height: 500px; /* Altura del banner principal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    overflow: hidden; /* Asegura que la imagen no se desborde */
+    margin-bottom: 30px;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra suave */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Usar una imagen de placeholder, puedes cambiarla por la tuya */
+    background-image: url('../../assets/Images/Rescate_de_Patitas.png');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.6); /* Oscurece la imagen para que el texto resalte */
+    z-index: 1;
+    transition: filter 0.3s ease;
+}
+
+.hero-section:hover::before {
+    filter: brightness(0.5); /* Ligeramente más oscuro al pasar el mouse */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté por encima del overlay de la imagen */
+    padding: 20px;
+    max-width: 700px;
+    background-color: rgba(0, 0, 0, 0.2); /* Fondo semitransparente para el texto */
+    border-radius: 10px;
+    backdrop-filter: blur(3px); /* Efecto de desenfoque en el fondo del texto */
+}
+
+.hero-content h1 {
+    font-size: 3.8em; /* Título grande y llamativo */
+    margin-bottom: 15px;
+    color: white;
+    font-weight: 800; /* Extra negrita */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra para el texto */
+}
+
+.hero-content p {
+    font-size: 1.4em; /* Texto descriptivo */
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #e0e0e0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.hero-content .cta-button {
+    background-color: #28a745; /* Un verde vibrante para el CTA principal */
+    font-size: 1.3em;
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.hero-content .cta-button:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 400px;
+        border-radius: 0; /* Sin bordes redondeados en móviles */
+    }
+
+    .hero-content h1 {
+        font-size: 2.8em;
+    }
+
+    .hero-content p {
+        font-size: 1.1em;
+    }
+
+    .hero-content .cta-button {
+        font-size: 1.1em;
+        padding: 12px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        height: 350px;
+        padding: 0;
+    }
+
+    .hero-content {
+        padding: 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2em;
+        margin-bottom: 10px;
+    }
+
+    .hero-content p {
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+
+    .hero-content .cta-button {
+        font-size: 1em;
+        padding: 10px 25px;
+    }
+}

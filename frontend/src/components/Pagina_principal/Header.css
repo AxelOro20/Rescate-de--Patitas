@@ -1,0 +1,162 @@
+/* src/components/Pagina_principal/Header.css */
+
+.header {
+    background-color: #343a40;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    /* No aplicamos padding ni flexbox directo aquí, se moverán al wrapper */
+}
+
+.header-content-wrapper {
+    display: flex;
+    justify-content: space-between; /* Espacio entre logo, nav y acciones derechas */
+    align-items: center; /* Alinea verticalmente los elementos */
+    max-width: 1200px; /* Misma anchura máxima que el resto de las secciones */
+    margin: 0 auto; /* Centra el contenido del header */
+    padding: 15px 40px; /* Padding interno del wrapper */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible dentro de su max-width */
+    box-sizing: border-box; /* Incluye padding en el ancho total */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+/* Estilos para la sección del logo */
+.header-logo {
+    display: flex;
+    align-items: center;
+    margin-right: 30px; /* Espacio entre el logo y la navegación */
+}
+
+/* Estilos para la imagen del logo */
+.logo-img {
+    height: 50px; /* Altura deseada para tu logo */
+    max-width: 150px; /* Ancho máximo para el logo */
+    object-fit: contain; /* Asegura que la imagen se ajuste sin distorsionarse */
+    border-radius: 8px; /* Pequeños bordes redondeados para el logo */
+}
+
+
+/* Estilos para la navegación (ahora en el centro) */
+.header-nav {
+    flex-grow: 1; /* Permite que la navegación ocupe el espacio central */
+    text-align: center; /* Centra los elementos de la navegación */
+    margin: 0 20px; /* Margen a los lados de la navegación */
+}
+
+.header-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Centra los elementos de la lista de navegación */
+    gap: 25px;
+}
+
+.header-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.header-nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #007bff;
+    transition: width 0.3s ease-out;
+}
+
+.header-nav a:hover::after {
+    width: 100%;
+}
+
+/* Sección de acciones a la derecha (solo login/signup) */
+.header-right-actions {
+    display: flex;
+    align-items: center;
+    /* Eliminamos el gap ya que solo queda un elemento o el gap no es necesario */
+}
+
+.login-button {
+    background: none;
+    border: 1px solid white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: none; /* Eliminar sombra del botón global */
+}
+
+.login-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f8f9fa;
+    transform: translateY(0); /* Anular efecto de levantamiento global */
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 992px) {
+    .header-content-wrapper {
+        padding: 15px 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .header-logo, .header-nav, .header-right-actions {
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .header-nav ul, .header-right-actions {
+        justify-content: center;
+        margin: 0;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .header-logo .logo-img { /* Ajuste el tamaño del logo para móviles */
+        height: 40px;
+        max-width: 120px;
+    }
+
+    .header-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header-nav a {
+        padding: 8px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content-wrapper {
+        padding: 15px 15px;
+    }
+
+    .header-logo .logo-img { /* Ajuste aún más para móviles pequeños */
+        height: 35px;
+        max-width: 100px;
+    }
+
+    .header-nav ul {
+        gap: 8px;
+    }
+
+    .header-right-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .login-button {
+        width: 100%;
+    }
+}

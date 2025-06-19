@@ -1,0 +1,146 @@
+/* src/components/Pagina_principal/WhyAdoptSection.css */
+
+.why-adopt-section {
+    text-align: center;
+    padding: 60px 20px; /* Más padding para mayor espacio */
+    background-color: #f8f9fa; /* Un color de fondo suave para destacar la sección */
+    border-radius: 12px; /* Esquinas más redondeadas */
+    margin-bottom: 30px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.why-adopt-section h2 {
+    font-size: 2.8em; /* Título más grande */
+    color: #343a40; /* Color de texto oscuro */
+    margin-bottom: 15px;
+    font-weight: 700; /* Negrita */
+}
+
+.why-adopt-section .subtitle {
+    font-size: 1.3em; /* Subtítulo ligeramente más grande */
+    color: #6c757d; /* Color gris suave */
+    margin-bottom: 50px; /* Mayor espacio debajo del subtítulo */
+    line-height: 1.6;
+}
+
+.reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3 columnas en pantallas grandes */
+    gap: 40px; /* Mayor separación entre elementos */
+    margin-top: 40px;
+    justify-content: center;
+    align-items: start; /* Alinea los ítems en la parte superior */
+}
+
+.reason-item {
+    text-align: center;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.reason-item:hover {
+    transform: translateY(-8px); /* Efecto de levitación al pasar el mouse */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.reason-item .icon-placeholder {
+    font-size: 3.5em; /* Iconos más grandes */
+    margin-bottom: 20px;
+    color: #20c997; /* Un color verde/azul vibrante para los iconos */
+    /* Asegura que el icono no se distorsione */
+    line-height: 1;
+    display: inline-block;
+}
+
+.reason-item h3 {
+    font-size: 1.6em; /* Títulos de ítems más grandes */
+    margin-bottom: 15px;
+    color: #495057; /* Color de texto oscuro */
+    font-weight: 600; /* Seminegrita */
+}
+
+.why-adopt-section .cta-button {
+    margin-top: 60px; /* Mayor espacio superior para el botón */
+    background-color: #007bff; /* Un azul primario consistente */
+    color: white;
+    padding: 15px 35px; /* Botón más grande */
+    font-size: 1.2em; /* Texto del botón más grande */
+    border-radius: 8px; /* Bordes más redondeados */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra para el botón */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.why-adopt-section .cta-button:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+    transform: translateY(-3px); /* Pequeño efecto de levantamiento */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .why-adopt-section {
+        padding: 40px 15px;
+    }
+
+    .why-adopt-section h2 {
+        font-size: 2.2em;
+    }
+
+    .why-adopt-section .subtitle {
+        font-size: 1.1em;
+        margin-bottom: 40px;
+    }
+
+    .reasons-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+        gap: 30px;
+    }
+
+    .reason-item {
+        padding: 25px;
+    }
+
+    .reason-item .icon-placeholder {
+        font-size: 3em;
+    }
+
+    .reason-item h3 {
+        font-size: 1.4em;
+    }
+
+    .why-adopt-section .cta-button {
+        padding: 12px 30px;
+        font-size: 1.1em;
+        width: 100%; /* Botón de ancho completo en móviles */
+    }
+}
+
+@media (max-width: 480px) {
+    .why-adopt-section h2 {
+        font-size: 1.8em;
+    }
+
+    .why-adopt-section .subtitle {
+        font-size: 1em;
+    }
+
+    .reason-item .icon-placeholder {
+        font-size: 2.5em;
+    }
+
+    .reason-item h3 {
+        font-size: 1.2em;
+    }
+}
+
