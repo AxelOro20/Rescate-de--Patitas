@@ -1,0 +1,233 @@
+/* src/components/AnimalsList/AnimalsListPage.css */
+
+.animals-list-page-container {
+    padding: 40px 20px;
+    background-color: #f0f2f5;
+    min-height: calc(100vh - 80px - 80px); /* Ajusta si tu header/footer tienen otras alturas */
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header h2 {
+    font-size: 3em;
+    color: #343a40;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.page-header p {
+    font-size: 1.2em;
+    color: #6c757d;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.animals-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.animal-list-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Asegura que las imágenes y contenido no se desborden */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.animal-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.animal-list-image-container {
+    width: 100%;
+    padding-bottom: 66.66%; /* Proporción 3:2 (ej. 300px ancho, 200px alto) */
+    position: relative;
+    background-color: #e9ecef;
+    overflow: hidden;
+}
+
+.animal-list-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cubre el área manteniendo la proporción */
+    display: block; /* Elimina espacio extra debajo de la imagen */
+}
+
+.animal-list-details {
+    padding: 20px;
+    flex-grow: 1; /* Permite que los detalles ocupen el espacio restante */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.animal-list-details h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #343a40;
+    text-align: left; /* Alineación del texto para la lista */
+}
+
+.animal-list-details p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    text-align: left;
+    flex-grow: 1; /* Permite que la descripción ocupe espacio */
+}
+
+.animal-list-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 20px;
+    justify-content: flex-start; /* Alinea los detalles a la izquierda */
+}
+
+.animal-list-meta span {
+    background-color: #e9f7ef;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #28a745;
+    font-weight: 500;
+}
+
+/* Reutilizamos el estilo del botón de adopción desde App.css */
+.animal-list-card .adopt-button {
+    width: 100%;
+    background-color: #17a2b8; /* Un azul cian */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    margin-top: 15px; /* Espacio superior */
+}
+
+.animal-list-card .adopt-button:hover {
+    background-color: #138496;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+.go-back-button {
+    background-color: #6c757d; /* Gris para el botón de volver */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.go-back-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .animals-list-page-container {
+        padding: 30px 15px;
+    }
+
+    .page-header h2 {
+        font-size: 2.5em;
+    }
+
+    .page-header p {
+        font-size: 1.1em;
+    }
+
+    .animals-list-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .animal-list-card {
+        padding-bottom: 0; /* No necesitamos padding-bottom en la tarjeta, solo en la imagen */
+    }
+
+    .animal-list-details h3 {
+        font-size: 1.5em;
+    }
+
+    .animal-list-details p {
+        font-size: 0.9em;
+    }
+
+    .animal-list-meta {
+        font-size: 0.85em;
+        gap: 8px;
+    }
+
+    .animal-list-card .adopt-button {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .animals-list-page-container {
+        padding: 20px 10px;
+    }
+
+    .page-header h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    .page-header p {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+
+    .animals-list-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles pequeños */
+        gap: 15px;
+    }
+
+    .animal-list-details h3 {
+        font-size: 1.3em;
+    }
+
+    .animal-list-meta {
+        font-size: 0.8em;
+    }
+
+    .animal-list-card .adopt-button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+}

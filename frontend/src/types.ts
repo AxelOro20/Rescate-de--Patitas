@@ -1,9 +1,14 @@
 // src/types.ts
+
 export interface UserData {
     id: number;
     email: string;
-    name?: string; // Propiedad opcional
-    lastname?: string; // Propiedad opcional
-    role: string; // Ejemplo: 'user', 'admin'
-    // Agrega aquí todas las propiedades que esperes recibir del backend para un usuario
+    name: string | null;
+    lastname: string | null;
+    phone?: string | null;   // <--- ¡AÑADE O ACTUALIZA ESTA LÍNEA!
+    address?: string | null; // <--- ¡AÑADE O ACTUALIZA ESTA LÍNEA!
+    city?: string | null;
+    state?: string | null;
+    zip_code?: string | null;
+    role: string;
 }

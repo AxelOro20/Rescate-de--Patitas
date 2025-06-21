@@ -1,146 +1,234 @@
-/* src/components/Pagina_principal/WhyAdoptSection.css */
+/* src/components/Pagina_principal/NewArrivals.css */
 
-.why-adopt-section {
+.new-arrivals-section {
     text-align: center;
-    padding: 60px 20px; /* Más padding para mayor espacio */
-    background-color: #f8f9fa; /* Un color de fondo suave para destacar la sección */
-    border-radius: 12px; /* Esquinas más redondeadas */
+    background-color: #f0f2f5; /* Fondo gris claro para la sección */
+    padding: 60px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     margin-bottom: 30px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada */
-    max-width: 1200px;
+    max-width: 1200px; /* Ya es manejado por main-content-wrapper, pero lo dejo por si acaso */
     margin-left: auto;
     margin-right: auto;
 }
 
-.why-adopt-section h2 {
-    font-size: 2.8em; /* Título más grande */
-    color: #343a40; /* Color de texto oscuro */
-    margin-bottom: 15px;
-    font-weight: 700; /* Negrita */
+.new-arrivals-section h2 {
+    font-size: 2.8em;
+    color: #343a40;
+    margin-bottom: 40px;
+    font-weight: 700;
 }
 
-.why-adopt-section .subtitle {
-    font-size: 1.3em; /* Subtítulo ligeramente más grande */
-    color: #6c757d; /* Color gris suave */
-    margin-bottom: 50px; /* Mayor espacio debajo del subtítulo */
-    line-height: 1.6;
-}
-
-.reasons-grid {
+.new-arrivals-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3 columnas en pantallas grandes */
-    gap: 40px; /* Mayor separación entre elementos */
-    margin-top: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
     justify-content: center;
-    align-items: start; /* Alinea los ítems en la parte superior */
+    align-items: stretch; /* Asegura que las tarjetas se estiren para igualar la altura */
 }
 
-.reason-item {
-    text-align: center;
-    padding: 30px;
+.new-arrival-card {
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 25px;
+    text-align: left;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
+}
+
+.new-arrival-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.new-arrival-image-placeholder {
+    width: 100%;
+    padding-bottom: 66.66%; /* Proporción 3:2 (200px alto / 300px ancho) - mantiene el espacio */
+    position: relative;
+    background-color: #e9ecef; /* Fondo del placeholder */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden; /* Muy importante para que la imagen no se salga */
+    display: flex; /* Para centrar la imagen dentro si es más pequeña */
+    justify-content: center;
     align-items: center;
 }
 
-.reason-item:hover {
-    transform: translateY(-8px); /* Efecto de levitación al pasar el mouse */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+/* **NUEVO ESTILO** para la imagen dentro del placeholder */
+.new-arrival-image-placeholder img.animal-card-img {
+    position: absolute; /* Para que ocupe todo el espacio del placeholder */
+    top: 0;
+    left: 0;
+    width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
+    height: 100%; /* La imagen ocupa el 100% del alto del contenedor */
+    object-fit: cover; /* **IMPORTANTE**: Cubre el área manteniendo la proporción, recorta si es necesario */
+    border-radius: 8px; /* Mismo borde que el contenedor */
 }
 
-.reason-item .icon-placeholder {
-    font-size: 3.5em; /* Iconos más grandes */
-    margin-bottom: 20px;
-    color: #20c997; /* Un color verde/azul vibrante para los iconos */
-    /* Asegura que el icono no se distorsione */
-    line-height: 1;
-    display: inline-block;
+/* Eliminamos los emojis de placeholder ya que ahora usamos una imagen real */
+.new-arrival-image-placeholder::before {
+    /* content: '🐶🐱'; */ /* Comentar o eliminar */
+    /* font-size: 3em; */ /* Comentar o eliminar */
+    /* ... otros estilos de los emojis */
+    content: none; /* Asegura que no se muestre el contenido del pseudo-elemento */
 }
 
-.reason-item h3 {
-    font-size: 1.6em; /* Títulos de ítems más grandes */
+
+.new-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ffc107; /* Amarillo */
+    color: #343a40;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.new-arrival-card h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #343a40;
+    text-align: left;
+}
+
+.new-arrival-card p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
     margin-bottom: 15px;
-    color: #495057; /* Color de texto oscuro */
-    font-weight: 600; /* Seminegrita */
+    flex-grow: 1;
 }
 
-.why-adopt-section .cta-button {
-    margin-top: 60px; /* Mayor espacio superior para el botón */
-    background-color: #007bff; /* Un azul primario consistente */
-    color: white;
-    padding: 15px 35px; /* Botón más grande */
-    font-size: 1.2em; /* Texto del botón más grande */
-    border-radius: 8px; /* Bordes más redondeados */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra para el botón */
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+.animal-details {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.why-adopt-section .cta-button:hover {
-    background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
-    transform: translateY(-3px); /* Pequeño efecto de levantamiento */
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+.animal-details span {
+    background-color: #e9f7ef;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #28a745;
+    font-weight: 500;
+}
+
+.adopt-button {
+    width: 100%;
+    background-color: #17a2b8;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.adopt-button:hover {
+    background-color: #138496;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.view-all-button {
+    margin-top: 40px;
+    background-color: #6c757d;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.view-all-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 /* Media Queries para Responsividad */
 @media (max-width: 768px) {
-    .why-adopt-section {
+    .new-arrivals-section {
         padding: 40px 15px;
     }
 
-    .why-adopt-section h2 {
+    .new-arrivals-section h2 {
         font-size: 2.2em;
     }
 
-    .why-adopt-section .subtitle {
-        font-size: 1.1em;
-        margin-bottom: 40px;
+    .new-arrivals-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
     }
 
-    .reasons-grid {
-        grid-template-columns: 1fr; /* Una columna en móviles */
-        gap: 30px;
+    .new-arrival-card {
+        padding: 20px;
     }
 
-    .reason-item {
-        padding: 25px;
+    .new-arrival-card h3 {
+        font-size: 1.5em;
     }
 
-    .reason-item .icon-placeholder {
-        font-size: 3em;
+    .new-arrival-image-placeholder {
+        padding-bottom: 75%; /* Ajuste de proporción */
     }
 
-    .reason-item h3 {
-        font-size: 1.4em;
-    }
-
-    .why-adopt-section .cta-button {
-        padding: 12px 30px;
-        font-size: 1.1em;
-        width: 100%; /* Botón de ancho completo en móviles */
+    .adopt-button, .view-all-button {
+        font-size: 1em;
+        padding: 10px 20px;
     }
 }
 
 @media (max-width: 480px) {
-    .why-adopt-section h2 {
+    .new-arrivals-section {
+        padding: 30px 10px;
+    }
+
+    .new-arrivals-section h2 {
         font-size: 1.8em;
     }
 
-    .why-adopt-section .subtitle {
-        font-size: 1em;
+    .new-arrivals-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 
-    .reason-item .icon-placeholder {
-        font-size: 2.5em;
+    .new-arrival-card {
+        padding: 15px;
     }
 
-    .reason-item h3 {
-        font-size: 1.2em;
+    .new-arrival-image-placeholder {
+        padding-bottom: 60%; /* Ajuste de proporción para móviles */
+    }
+    
+    /* Asegura que el pseudo-elemento no afecte la imagen real */
+    .new-arrival-image-placeholder::before {
+        content: none;
+    }
+
+    .new-badge {
+        font-size: 0.75em;
+        padding: 4px 8px;
+    }
+
+    .new-arrival-card h3 {
+        font-size: 1.4em;
+    }
+
+    .animal-details {
+        font-size: 0.8em;
+        gap: 10px;
+    }
+
+    .adopt-button, .view-all-button {
+        font-size: 0.9em;
+        padding: 8px 15px;
     }
 }
-

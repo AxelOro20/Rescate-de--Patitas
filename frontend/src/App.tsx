@@ -4,7 +4,7 @@ import './App.css'; // Estilos globales
 // Importa la interfaz UserData con 'type'
 import type { UserData } from './types';
 
-// Importa tus componentes (asumiendo que todos tienen un 'export default')
+// Importa tus componentes
 import Header from './components/Pagina_principal/Header';
 import HeroSection from './components/Pagina_principal/HeroSection';
 import FeaturedAnimals from './components/Pagina_principal/FeaturedAnimals';
@@ -13,94 +13,112 @@ import WhyAdoptSection from './components/Pagina_principal/WhyAdoptSection';
 import Footer from './components/Pagina_principal/Footer';
 import LoginPage from './components/Login/LoginPage';
 import RegisterPage from './components/Login/RegisterPage';
+import AdoptionFormPage from './components/Adoption/AdoptionFormPage';
+import AnimalsListPage from './components/AnimalsList/AnimalsListPage';
 
 function App() {
-    // Estado para controlar qué vista se muestra: 'home', 'login', 'register'
-    const [currentView, setCurrentView] = useState<'home' | 'login' | 'register'>('home');
-    // Estado para simular si el usuario está logueado, con tipado explícito
+    // Estado para controlar qué vista se muestra: 'home', 'login', 'register', 'adopt', 'animals-list'
+    const [currentView, setCurrentView] = useState<'home' | 'login' | 'register' | 'adopt' | 'animals-list'>('home');
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    // Estado para guardar los datos básicos del usuario: puede ser UserData o null, con tipado explícito
     const [user, setUser] = useState<UserData | null>(null);
+    const [animalIdForAdoption, setAnimalIdForAdoption] = useState<number | null>(null);
 
-    // Manejador de clic para el botón de Login
-    const handleLoginClick = () => {
-        console.log("Botón de Login pulsado! Cambiando vista a 'login'."); // Mensaje de depuración
-        setCurrentView('login');
-    };
-
-    // Manejador de clic para el botón de Registro
-    const handleRegisterClick = () => {
-        setCurrentView('register');
-    };
-
-    // Manejador para el éxito del login, recibe userData tipado
+    // Manejadores existentes
+    const handleLoginClick = () => setCurrentView('login');
+    const handleRegisterClick = () => setCurrentView('register');
     const handleLoginSuccess = (userData: UserData) => {
         setIsLoggedIn(true);
         setUser(userData);
-        setCurrentView('home'); // Volver a la página principal tras login exitoso
-        alert(`¡Bienvenido, ${userData.name || userData.email}!`); // 'name' ahora es reconocido
+        setCurrentView('home');
+        alert(`¡Bienvenido, ${userData.name || userData.email}!`);
     };
-
-    // Manejador para cerrar sesión
     const handleLogout = () => {
         setIsLoggedIn(false);
         setUser(null);
         setCurrentView('home');
         alert('Sesión cerrada.');
-        localStorage.removeItem('userToken'); // Limpiar el token de sesión
+        localStorage.removeItem('userToken');
     };
 
-    // Lógica para el botón "Adopta ahora"
+    // Lógica para el botón "Adopta ahora" (desde HeroSection y WhyAdoptSection)
     const handleAdoptNowClick = () => {
-        if (isLoggedIn) {
-            // Si el usuario está logueado, llevar a la página de adopción general (a implementar)
-            alert('Llevar a la página de adopción general para usuarios logueados.');
-        } else {
-            // Si no está logueado, hacer scroll suave hacia la sección "Nuevos Inquilinos"
-            const newArrivalsSection = document.getElementById('new-arrivals-section');
-            if (newArrivalsSection) {
-                newArrivalsSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
+        setAnimalIdForAdoption(null); // No se selecciona un animal específico inicialmente
+        setCurrentView('adopt'); // Ir a la página de formulario de adopción (general)
     };
 
-    // Nueva función para volver a la página de inicio
-    const handleGoHome = () => {
+    // Manejador específico para el botón "Quiero adoptar" de las tarjetas de animales
+    const handleAdoptSpecificAnimalClick = (animalId: number) => {
+        setAnimalIdForAdoption(animalId);
+        setCurrentView('adopt');
+    };
+
+    // Callback para cuando el formulario de adopción se envía exitosamente
+    const handleAdoptionFormSuccess = () => {
+        setAnimalIdForAdoption(null);
+        setCurrentView('home'); // Vuelve a la vista principal
+    };
+
+    // Callback para el botón "Volver" en el formulario de adopción y AnimalsListPage
+    const handleGoBackToHome = () => {
         setCurrentView('home');
     };
 
+    // Nuevo manejador para el botón "Ver todos"
+    const handleViewAllAnimalsClick = () => {
+        setCurrentView('animals-list');
+    };
+
+
     return (
         <div className="App">
-            {/* El Header se renderiza siempre */}
             <Header
                 isLoggedIn={isLoggedIn}
                 userName={user ? user.name : null}
                 onLoginClick={isLoggedIn ? handleLogout : handleLoginClick}
-                onLogoClick={handleGoHome} 
+                onLogoClick={handleGoBackToHome} // El logo siempre vuelve a home
             />
 
-            {/* Contenido principal de la aplicación */}
-            {/* Si currentView es 'home', se muestra el contenido de la página de inicio dentro del wrapper */}
+            {/* Contenido principal condicional */}
             {currentView === 'home' && (
                 <main className="main-content-wrapper">
                     <HeroSection onAdoptClick={handleAdoptNowClick} />
-                    <FeaturedAnimals />
-                    <NewArrivals /> {/* Este componente necesita un ID para el scroll: <section id="new-arrivals-section"> */}
+                    <NewArrivals
+                        onAdoptClick={handleAdoptSpecificAnimalClick}
+                        onViewAllClick={handleViewAllAnimalsClick}
+                    />
+                    <FeaturedAnimals
+                        onAdoptClick={handleAdoptSpecificAnimalClick}
+                    />
                     <WhyAdoptSection onAdoptClick={handleAdoptNowClick} />
                 </main>
             )}
 
-            {/* Si currentView es 'login', se muestra el componente LoginPage */}
             {currentView === 'login' && (
                 <LoginPage onLoginSuccess={handleLoginSuccess} onRegisterClick={handleRegisterClick} />
             )}
 
-            {/* Si currentView es 'register', se muestra el componente RegisterPage */}
             {currentView === 'register' && (
                 <RegisterPage onRegisterSuccess={() => setCurrentView('login')} onLoginClick={handleLoginClick} />
             )}
 
-            {/* El Footer se renderiza siempre */}
+            {currentView === 'adopt' && (
+                <AdoptionFormPage
+                    animalId={animalIdForAdoption}
+                    isLoggedIn={isLoggedIn}
+                    currentUser={user}
+                    onFormSubmitSuccess={handleAdoptionFormSuccess}
+                    onGoBack={handleGoBackToHome}
+                />
+            )}
+
+            {/* Nueva vista para la lista completa de animales */}
+            {currentView === 'animals-list' && (
+                <AnimalsListPage
+                    onAdoptClick={handleAdoptSpecificAnimalClick}
+                    onGoBack={handleGoBackToHome}
+                />
+            )}
+
             <Footer />
         </div>
     );

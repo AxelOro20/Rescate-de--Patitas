@@ -1,10 +1,7 @@
 /* src/components/Pagina_principal/FeaturedAnimals.css */
 
 .featured-animals {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3 columnas en pantallas grandes */
-    gap: 30px; /* Espacio entre las tarjetas */
-    padding: 30px 20px; /* Padding interno */
+    text-align: center; /* Centrar el título "Animales Destacados" */
     background-color: #fff; /* Fondo blanco */
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0,0,0,0.08); /* Sombra ligera */
@@ -12,6 +9,25 @@
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    padding: 30px 20px; /* Padding interno para la sección principal */
+    box-sizing: border-box; /* Asegura que el padding no añada ancho extra */
+}
+
+.featured-animals h2 {
+    font-size: 2.8em;
+    color: #343a40;
+    margin-bottom: 40px; /* Más espacio debajo del título */
+    font-weight: 700;
+}
+
+.featured-animals-grid { /* Contenedor para las tarjetas de animales destacados */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Columnas responsivas */
+    gap: 30px; /* Espacio entre las tarjetas */
+    justify-content: center; /* Centrar las tarjetas en la cuadrícula */
+    align-items: stretch; /* Asegura que las tarjetas tengan la misma altura */
+    max-width: 100%; /* Asegura que la cuadrícula no se desborde */
+    margin: 0 auto; /* Centrar la cuadrícula dentro de la sección */
 }
 
 .animal-card {
@@ -23,9 +39,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Espacio entre imagen y nombre */
+    justify-content: space-between; /* Empuja el botón al fondo si hay espacio */
     align-items: center;
     height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+    box-sizing: border-box; /* Incluye padding en la altura total */
 }
 
 .animal-card:hover {
@@ -36,38 +53,60 @@
 .animal-image-placeholder {
     width: 100%;
     /* Altura basada en una proporción 4:3 para las imágenes */
-    padding-bottom: 75%; /* 3 / 4 = 0.75 */
+    padding-bottom: 75%; /* (alto / ancho) * 100 = (300/400)*100 = 75% */
     position: relative;
     background-color: #e9ecef; /* Color de fondo del placeholder */
     border-radius: 8px;
     margin-bottom: 15px;
-    overflow: hidden; /* Para contener la imagen de placeholder */
-    display: flex; /* Para centrar el texto/icono del placeholder */
+    overflow: hidden; /* Para contener la imagen */
+    display: flex;
     justify-content: center;
     align-items: center;
-    color: #6c757d;
-    font-weight: bold;
-    font-size: 1.2em;
 }
 
-/* Puedes añadir una imagen de placeholder aquí si lo deseas */
-.animal-image-placeholder::before {
-    content: '🐾'; /* Un emoji o icono simple */
-    font-size: 4em;
+.animal-image-placeholder img.animal-card-img {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #adb5bd;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cubre el área manteniendo la proporción, recorta si es necesario */
+    border-radius: 8px;
+}
+
+/* Eliminar el pseudo-elemento ::before si todavía está presente y causa las patitas */
+.animal-image-placeholder::before {
+    content: none; /* Asegura que no se muestre ningún contenido de pseudo-elemento */
 }
 
 
 .animal-card h3 {
     font-size: 1.8em; /* Título del animal */
-    margin-bottom: 0; /* Eliminar margen inferior si es el último elemento */
+    margin-bottom: 15px; /* Espacio debajo del nombre del animal */
     color: #343a40;
     font-weight: 600;
 }
+
+.animal-card .adopt-button { /* Estilos específicos para el botón en la tarjeta de animal */
+    background-color: #17a2b8; /* Color azul cian, puedes ajustar */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    width: 100%; /* El botón ocupa todo el ancho de la tarjeta */
+    margin-top: auto; /* Empuja el botón al final de la tarjeta */
+}
+
+.animal-card .adopt-button:hover {
+    background-color: #138496;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
 
 /* Media Queries para Responsividad */
 @media (max-width: 768px) {
@@ -84,6 +123,15 @@
     .animal-card h3 {
         font-size: 1.5em;
     }
+
+    .animal-image-placeholder {
+        padding-bottom: 60%; /* Ajuste de proporción para mantener imágenes más compactas en móviles */
+    }
+
+    .animal-card .adopt-button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -98,14 +146,15 @@
     }
 
     .animal-image-placeholder {
-        padding-bottom: 60%; /* Ajustar la proporción para móviles */
-    }
-
-    .animal-image-placeholder::before {
-        font-size: 3em;
+        padding-bottom: 56.25%; /* Proporción 16:9 para móviles si lo prefieres */
     }
 
     .animal-card h3 {
         font-size: 1.4em;
+    }
+
+    .animal-card .adopt-button {
+        font-size: 0.85em;
+        padding: 7px 12px;
     }
 }
