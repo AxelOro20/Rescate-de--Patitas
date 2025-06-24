@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import './AuthForms.css';
 
-// 1. Define la interfaz para las props del componente RegisterPage
-interface RegisterPageProps {
-    onRegisterSuccess: () => void; // Función que no toma argumentos y no devuelve nada
-    onLoginClick: () => void;     // Función que no toma argumentos y no devuelve nada
-}
+// Ya no necesitamos la interfaz RegisterPageProps si no se esperan props.
+// Si en el futuro necesitas props, vuelve a definirla.
+// interface RegisterPageProps {
+//     onRegisterSuccess: () => void;
+//     onLoginClick: () => void;
+// }
 
-// 2. Aplica la interfaz a las props del componente
-function RegisterPage({ onRegisterSuccess, onLoginClick }: RegisterPageProps) {
+// No desestructuramos props aquí si no las usamos
+function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -20,6 +22,7 @@ function RegisterPage({ onRegisterSuccess, onLoginClick }: RegisterPageProps) {
     const [zipCode, setZipCode] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // Inicializa useNavigate
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -48,8 +51,10 @@ function RegisterPage({ onRegisterSuccess, onLoginClick }: RegisterPageProps) {
             const data = await response.json();
 
             if (response.ok) {
+                // Usar una notificación más amigable en lugar de alert() en un entorno de producción
+                // Para el propósito de depuración, alert() es aceptable por ahora.
                 alert('Registro exitoso. Ahora puedes iniciar sesión.');
-                onRegisterSuccess();
+                navigate('/login'); // Redirige a la página de login después del registro exitoso
             } else {
                 setError(data.message || 'Error al registrar el usuario.');
             }
@@ -72,7 +77,6 @@ function RegisterPage({ onRegisterSuccess, onLoginClick }: RegisterPageProps) {
                         type="email"
                         id="registerEmail"
                         value={email}
-                        // Tipado explícito para el evento onChange del input
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                         required
                     />
@@ -158,7 +162,7 @@ function RegisterPage({ onRegisterSuccess, onLoginClick }: RegisterPageProps) {
                     {loading ? 'Registrando...' : 'Registrar'}
                 </button>
                 <p className="auth-switch">
-                    ¿Ya tienes una cuenta? <span onClick={onLoginClick}>Inicia sesión aquí</span>
+                    ¿Ya tienes una cuenta? <span onClick={() => navigate('/login')} style={{ cursor: 'pointer' }}>Inicia sesión aquí</span>
                 </p>
             </form>
         </div>

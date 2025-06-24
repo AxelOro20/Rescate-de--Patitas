@@ -2,18 +2,16 @@
 
 const express = require('express');
 const router = express.Router();
-const pool = require('../db'); // Importa el pool de la base de datos
-const authenticateToken = require('../middleware/authMiddleware'); // Importa el middleware de autenticación
-
-// --- Rutas para la Gestión de Solicitudes de Adopción ---
+const pool = require('../db');
+const authenticateToken = require('../middleware/authMiddleware');
+const authorizeAdmin = require('../middleware/authorizeAdmin'); // ¡Nueva importación!
 
 // Crear una nueva solicitud de adopción
-// Esta ruta puede ser accedida por usuarios no autenticados si user_id es nulo
-// o por usuarios autenticados, en cuyo caso se usa su user_id
-router.post('/', async (req, res) => {
-    // Si el usuario está autenticado, podemos usar su ID.
-    // Si no lo está, los campos de applicant_name, email, etc., serán requeridos.
-    const user_id = req.user ? req.user.id : null; // req.user viene del authenticateToken
+// Esta ruta es diseñada para ser accesible por usuarios logueados (que envían token)
+// o por usuarios no logueados (que no envían token).
+// Si el token está presente y es válido, authenticateToken adjunta req.user.
+// La lógica interna maneja si se usa user_id del token o los campos applicant_*.
+router.post('/', authenticateToken, async (req, res) => { // authenticateToken aquí es para poblar req.user si hay token
     const {
         animal_id,
         applicant_name,
@@ -23,12 +21,14 @@ router.post('/', async (req, res) => {
         motivation
     } = req.body;
 
-    // Validación básica: al menos un animal_id y motivación son necesarios
+    // user_id será del token si el usuario está logueado y el token es válido, de lo contrario será null.
+    const user_id = req.user ? req.user.id : null;
+
     if (!animal_id || !motivation) {
         return res.status(400).json({ message: 'El ID del animal y la motivación son requeridos.' });
     }
 
-    // Si el usuario no está logueado, los datos del solicitante son obligatorios
+    // Si el usuario no está logueado (user_id es null), los datos del solicitante son obligatorios
     if (!user_id && (!applicant_name || !applicant_email || !applicant_phone || !applicant_address)) {
         return res.status(400).json({ message: 'Para solicitudes sin usuario registrado, nombre, email, teléfono y dirección son requeridos.' });
     }
@@ -48,14 +48,30 @@ router.post('/', async (req, res) => {
 });
 
 
-// Obtener todas las solicitudes de adopción (Requiere autenticación y rol de administrador)
+// Obtener solicitudes de adopción (Requiere autenticación)
+// Si es admin, obtiene todas. Si es usuario normal, obtiene solo las suyas.
 router.get('/', authenticateToken, async (req, res) => {
-    // Solo administradores pueden ver todas las solicitudes
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Acceso denegado. Solo los administradores pueden ver todas las solicitudes de adopción.' });
-    }
     try {
-        const result = await pool.query('SELECT * FROM adoptions ORDER BY created_at DESC');
+        let queryText = `
+            SELECT 
+                a.*, 
+                u.email AS user_email, 
+                u.name AS user_name, -- Asegúrate de que esto se selecciona en la DB
+                an.name AS animal_name
+            FROM adoptions a
+            LEFT JOIN users u ON a.user_id = u.id
+            LEFT JOIN animals an ON a.animal_id = an.id
+        `;
+        let queryParams = []; 
+
+        // Si el usuario no es admin, filtramos por su ID
+        if (req.user.role !== 'admin') {
+            queryText += ' WHERE a.user_id = $1';
+            queryParams.push(req.user.id);
+        }
+        queryText += ' ORDER BY a.created_at DESC';
+
+        const result = await pool.query(queryText, queryParams);
         res.status(200).json(result.rows);
     } catch (err) {
         console.error('Error al obtener solicitudes de adopción:', err);
@@ -67,7 +83,18 @@ router.get('/', authenticateToken, async (req, res) => {
 router.get('/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM adoptions WHERE id = $1', [id]);
+        const result = await pool.query(
+            `SELECT 
+                a.*, 
+                u.email AS user_email, 
+                u.name AS user_name, 
+                an.name AS animal_name 
+            FROM adoptions a
+            LEFT JOIN users u ON a.user_id = u.id
+            LEFT JOIN animals an ON a.animal_id = an.id
+            WHERE a.id = $1`, 
+            [id]
+        );
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'Solicitud de adopción no encontrada.' });
         }
@@ -87,12 +114,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // Actualizar el estado de una solicitud de adopción (Requiere autenticación y rol de administrador)
-router.put('/:id', authenticateToken, async (req, res) => {
-    // Solo administradores pueden actualizar el estado de las solicitudes
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Acceso denegado. Solo los administradores pueden actualizar solicitudes de adopción.' });
-    }
-
+router.put('/:id', authenticateToken, authorizeAdmin, async (req, res) => {
     const { id } = req.params;
     const { status } = req.body; // Solo permitiremos actualizar el estado en esta ruta
 
@@ -100,7 +122,6 @@ router.put('/:id', authenticateToken, async (req, res) => {
         return res.status(400).json({ message: 'El estado de la solicitud es requerido para la actualización.' });
     }
 
-    // Puedes añadir una validación de estados permitidos aquí si es necesario
     const allowedStatuses = ['pendiente', 'en revisión', 'aprobada', 'rechazada', 'completada'];
     if (!allowedStatuses.includes(status)) {
         return res.status(400).json({ message: `Estado inválido. Los estados permitidos son: ${allowedStatuses.join(', ')}` });
@@ -125,12 +146,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 });
 
 // Eliminar una solicitud de adopción (Requiere autenticación y rol de administrador)
-router.delete('/:id', authenticateToken, async (req, res) => {
-    // Solo administradores pueden eliminar solicitudes
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Acceso denegado. Solo los administradores pueden eliminar solicitudes de adopción.' });
-    }
-
+router.delete('/:id', authenticateToken, authorizeAdmin, async (req, res) => {
     const { id } = req.params;
     try {
         const deletedAdoption = await pool.query('DELETE FROM adoptions WHERE id = $1 RETURNING *', [id]);

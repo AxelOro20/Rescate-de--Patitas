@@ -1,0 +1,181 @@
+/* src/components/UserProfile/UserProfilePage.css */
+
+.user-profile-container {
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 80px - 80px); /* Ajusta si tu header/footer tienen otras alturas */
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile-container.not-authorized {
+    text-align: center;
+    padding: 80px 20px;
+    color: #dc3545;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-header h2 {
+    font-size: 3em;
+    color: #343a40;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.profile-header p {
+    font-size: 1.1em;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.profile-details-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.profile-details-section h3 {
+    font-size: 2.2em;
+    color: #495057;
+    margin-bottom: 25px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 columnas en pantallas medianas */
+    gap: 20px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.detail-item.full-width {
+    grid-column: 1 / -1; /* Ocupa todo el ancho en el grid */
+}
+
+.detail-item strong {
+    color: #495057;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.detail-item span {
+    color: #343a40;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.go-back-button, .edit-profile-button {
+    background-color: #6c757d; /* Gris para el botón de volver */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.go-back-button:hover, .edit-profile-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+.edit-profile-button {
+    background-color: #007bff; /* Azul para el botón de editar */
+    margin-left: 0; /* Asegura que no tenga margen automático si es el único botón */
+    display: block; /* Para que ocupe su propia línea */
+    margin-top: 30px; /* Margen superior para separarlo de los detalles */
+    width: fit-content; /* Se ajusta al contenido */
+    padding: 12px 25px; /* Más padding para un botón más grande */
+    font-size: 1.1em;
+}
+
+.edit-profile-button:hover {
+    background-color: #0056b3;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .user-profile-container {
+        padding: 30px 15px;
+    }
+
+    .profile-header h2 {
+        font-size: 2.5em;
+    }
+
+    .profile-details-section {
+        padding: 20px;
+    }
+
+    .profile-details-section h3 {
+        font-size: 1.8em;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+        gap: 15px;
+    }
+
+    .detail-item {
+        padding: 12px;
+    }
+
+    .detail-item strong {
+        font-size: 0.9em;
+    }
+
+    .detail-item span {
+        font-size: 0.85em;
+    }
+
+    .go-back-button, .edit-profile-button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    .edit-profile-button {
+        width: 100%; /* Botón de ancho completo en móviles */
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-profile-container {
+        padding: 20px 10px;
+    }
+
+    .profile-header h2 {
+        font-size: 2em;
+    }
+
+    .profile-details-section h3 {
+        font-size: 1.5em;
+    }
+}

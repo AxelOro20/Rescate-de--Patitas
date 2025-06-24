@@ -1,216 +1,294 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom'; // Importa useParams y useNavigate
 import './AdoptionFormPage.css';
-
-// Importa la interfaz UserData (asegúrate de que la ruta sea correcta)
 import type { UserData } from '../../types';
 
-// Define las props que este componente espera recibir
+// Interfaz para el animal que se va a adoptar (podría ser más completa si lo necesitas)
+interface Animal {
+    id: number;
+    name: string;
+    image_urls?: string[];
+}
+
+// Propiedades para el componente AdoptionFormPage
 interface AdoptionFormPageProps {
-    animalId: number | null; // El ID del animal que se desea adoptar
-    isLoggedIn: boolean;     // Indica si el usuario está logueado
+    // animalId: number | null; // <-- Ya no se recibe como prop, se obtiene de useParams
+    // isLoggedIn: boolean;     // <-- Ya no se recibe como prop, se deduce de currentUser
     currentUser: UserData | null; // Datos del usuario logueado, si aplica
     onFormSubmitSuccess: () => void; // Callback para cuando el formulario se envía exitosamente
-    onGoBack: () => void; // Callback para volver a la página anterior
+    // onGoBack: () => void; // <-- Ya no se recibe como prop, se usa useNavigate
 }
 
-// Interfaz para la carga útil (payload) de la solicitud de adopción
-interface AdoptionPayload {
-    animal_id: number | null;
-    motivation: string;
-    applicant_name?: string; // Opcional si user_id está presente en el backend
-    applicant_email?: string;
-    applicant_phone?: string;
-    applicant_address?: string;
-    // user_id no se envía desde aquí directamente en el payload, se espera que el backend lo tome del token
-}
+function AdoptionFormPage({ currentUser, onFormSubmitSuccess }: AdoptionFormPageProps) {
+    const { animalId: paramAnimalId } = useParams<{ animalId: string }>(); // Obtiene animalId de la URL
+    const animalId = paramAnimalId ? Number(paramAnimalId) : null; // Convierte a número o null
 
-function AdoptionFormPage({ animalId, isLoggedIn, currentUser, onFormSubmitSuccess, onGoBack }: AdoptionFormPageProps) {
-    const [motivation, setMotivation] = useState('');
-    // Estados para campos del solicitante (si no está logueado)
+    const navigate = useNavigate(); // Inicializa useNavigate
+
+    const [animal, setAnimal] = useState<Animal | null>(null);
+    const [loadingAnimal, setLoadingAnimal] = useState(true);
+    const [animalError, setAnimalError] = useState<string | null>(null);
+
+    // Estados para los campos del formulario de adopción
     const [applicantName, setApplicantName] = useState('');
     const [applicantEmail, setApplicantEmail] = useState('');
     const [applicantPhone, setApplicantPhone] = useState('');
     const [applicantAddress, setApplicantAddress] = useState('');
+    const [motivation, setMotivation] = useState('');
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [formError, setFormError] = useState<string | null>(null);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [animalName, setAnimalName] = useState<string | null>(null); // Para mostrar el nombre del animal
 
-    // Efecto para precargar datos si el usuario está logueado y para obtener el nombre del animal
+    const token = localStorage.getItem('userToken');
+    const isLoggedIn = !!currentUser; // Deriva isLoggedIn del currentUser
+
+    // Efecto para cargar los detalles del animal si se proporciona un animalId
+    useEffect(() => {
+        const fetchAnimalDetails = async () => {
+            if (animalId === null) {
+                setLoadingAnimal(false);
+                setAnimal(null); // Asegura que no haya un animal precargado si no hay ID
+                return;
+            }
+            setLoadingAnimal(true);
+            setAnimalError(null);
+            try {
+                const response = await fetch(`http://localhost:5000/api/animals/${animalId}`);
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar la información del animal.');
+                }
+                const data: Animal = await response.json();
+                setAnimal(data);
+            } catch (err) {
+                console.error("Error fetching animal details:", err);
+                setAnimalError("Error al cargar la información del animal.");
+            } finally {
+                setLoadingAnimal(false);
+            }
+        };
+
+        fetchAnimalDetails();
+    }, [animalId]); // Se ejecuta cuando animalId cambia
+
+    // Efecto para prellenar los campos del formulario si el usuario está logueado
     useEffect(() => {
         if (isLoggedIn && currentUser) {
             setApplicantName(currentUser.name || '');
             setApplicantEmail(currentUser.email || '');
-            // Asegúrate de que 'phone' y 'address' existan en tu interfaz UserData en src/types.ts
-            // Si no existen, TypeScript marcará un error aquí.
-            setApplicantPhone(currentUser.phone || ''); 
-            setApplicantAddress(currentUser.address || ''); 
+            setApplicantPhone(currentUser.phone || '');
+            setApplicantAddress(currentUser.address || '');
+            // La motivación siempre se deja vacía para que el usuario la rellene
+        } else {
+            // Si no está logueado, limpia los campos o los deja vacíos para que el invitado los llene
+            setApplicantName('');
+            setApplicantEmail('');
+            setApplicantPhone('');
+            setApplicantAddress('');
         }
+    }, [isLoggedIn, currentUser]); // Se ejecuta cuando el estado de login o el usuario actual cambian
 
-        // Obtener el nombre del animal si se proporciona un animalId
-        const fetchAnimalName = async () => {
-            if (animalId) {
-                try {
-                    const response = await fetch(`http://localhost:5000/api/animals/${animalId}`);
-                    if (response.ok) {
-                        const data = await response.json();
-                        setAnimalName(data.name);
-                    } else {
-                        console.error('No se pudo cargar el nombre del animal:', response.statusText);
-                        setAnimalName('Animal no encontrado');
-                    }
-                } catch (err) {
-                    console.error('Error al obtener el nombre del animal:', err);
-                    setAnimalName('Error al cargar animal');
-                }
-            } else {
-                setAnimalName('Ningún animal seleccionado');
-            }
-        };
-        fetchAnimalName();
-    }, [animalId, isLoggedIn, currentUser]); // Dependencias del useEffect
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    // Manejador del envío del formulario
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError(null);
+        setFormError(null);
+        setLoadingSubmit(true);
         setSuccessMessage(null);
-        setLoading(true);
 
-        // Usamos la nueva interfaz AdoptionPayload
-        const payload: AdoptionPayload = {
+        if (!animalId) {
+            setFormError("Debes seleccionar un animal para adoptar.");
+            setLoadingSubmit(false);
+            return;
+        }
+
+        // Datos base de la solicitud
+        const requestData: {
+            animal_id: number;
+            motivation: string;
+            user_id?: number | null;
+            applicant_name?: string | null;
+            applicant_email?: string | null;
+            applicant_phone?: string | null;
+            applicant_address?: string | null;
+        } = {
             animal_id: animalId,
-            motivation: motivation
+            motivation: motivation,
         };
 
-        // Si el usuario no está logueado, incluir los datos del solicitante
-        if (!isLoggedIn) {
-            payload.applicant_name = applicantName;
-            payload.applicant_email = applicantEmail;
-            payload.applicant_phone = applicantPhone;
-            payload.applicant_address = applicantAddress;
+        // Lógica condicional para usuarios logueados vs. no logueados
+        if (isLoggedIn && currentUser) {
+            requestData.user_id = currentUser.id;
+            // Se envían los datos del usuario logueado, permitiendo que sean null si no están definidos
+            requestData.applicant_name = currentUser.name || null;
+            requestData.applicant_email = currentUser.email || null;
+            requestData.applicant_phone = currentUser.phone || null;
+            requestData.applicant_address = currentUser.address || null;
+
+        } else {
+            // Validar campos requeridos para usuarios no registrados
+            if (!applicantName || !applicantEmail || !applicantPhone || !applicantAddress) {
+                setFormError("Para solicitudes sin usuario registrado, nombre, email, teléfono y dirección son requeridos.");
+                setLoadingSubmit(false);
+                return;
+            }
+            requestData.applicant_name = applicantName;
+            requestData.applicant_email = applicantEmail;
+            requestData.applicant_phone = applicantPhone;
+            requestData.applicant_address = applicantAddress;
+            requestData.user_id = null; // Asegura que user_id sea null si es un invitado
         }
-        // Si el usuario está logueado, user_id se enviará automáticamente si se pasa un token al backend,
-        // pero la API de adopciones que creamos en el backend no requiere el token para la creación,
-        // sino que el 'user_id' se toma de 'req.user' si el middleware authenticateToken se hubiera aplicado.
-        // Como la ruta POST de adopciones no lo usa, debemos asegurarnos de que los campos applicant_* sean consistentes.
-        // Por la forma en que está diseñada nuestra API de adopciones, siempre envía los campos applicant_*
-        // y el backend usará user_id si se detecta un token válido.
 
         try {
-            const token = localStorage.getItem('userToken'); // Obtener el token si existe
-
             const headers: HeadersInit = {
                 'Content-Type': 'application/json',
             };
-
-            if (token && isLoggedIn) { // Si hay token y el usuario está logueado, envíalo
+            if (token) {
                 headers['Authorization'] = `Bearer ${token}`;
             }
 
-            const response = await fetch('http://localhost:5000/api/adoptions/', {
+            const response = await fetch('http://localhost:5000/api/adoptions', {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify(payload)
+                body: JSON.stringify(requestData),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                setSuccessMessage(data.message || '¡Tu solicitud ha sido enviada con éxito!');
-                // Limpiar formulario o redirigir
-                setMotivation('');
-                setApplicantName('');
-                setApplicantEmail('');
-                setApplicantPhone('');
-                setApplicantAddress('');
-                onFormSubmitSuccess(); // Llama al callback para ir a la Home o mostrar mensaje
+                setSuccessMessage(data.message || '¡Solicitud de adopción enviada con éxito!');
+                setTimeout(() => {
+                    onFormSubmitSuccess(); // Redirige después de un mensaje de éxito
+                }, 2000);
             } else {
-                setError(data.message || 'Error al enviar la solicitud.');
+                setFormError(data.message || 'Error al enviar la solicitud de adopción.');
             }
-        } catch (err: unknown) { // Cambiado 'any' a 'unknown' para un tipado más seguro
-            console.error('Error al enviar la solicitud de adopción:', err);
+        } catch (err: unknown) {
+            console.error('Error al enviar la solicitud:', err);
             if (err instanceof Error) {
-                setError(`No se pudo conectar con el servidor: ${err.message}. Inténtalo de nuevo más tarde.`);
+                setFormError(`No se pudo conectar con el servidor: ${err.message}`);
             } else {
-                setError('Ocurrió un error desconocido al enviar la solicitud. Inténtalo de nuevo más tarde.');
+                setFormError("Ocurrió un error desconocido al enviar la solicitud.");
             }
         } finally {
-            setLoading(false);
+            setLoadingSubmit(false);
         }
     };
+
+    // Función para el botón "Volver"
+    const handleGoBack = () => {
+        if (currentUser?.role === 'user') {
+            navigate('/dashboard'); // Si es usuario, regresa al dashboard
+        } else {
+            navigate(-1); // Si no, regresa a la página anterior en el historial
+        }
+    };
+
+
+    if (loadingAnimal) {
+        return (
+            <div className="adoption-form-container">
+                <p>Cargando información del animal...</p>
+            </div>
+        );
+    }
+
+    if (animalError) {
+        return (
+            <div className="adoption-form-container">
+                <p className="error-message">{animalError}</p>
+                <button onClick={handleGoBack} className="go-back-button">Volver</button>
+            </div>
+        );
+    }
+
+    if (!animal) {
+        return (
+            <div className="adoption-form-container">
+                <p className="error-message">No se encontró información del animal. Por favor, selecciona un animal para adoptar.</p>
+                <button onClick={handleGoBack} className="go-back-button">Volver</button>
+            </div>
+        );
+    }
 
     return (
         <div className="adoption-form-container">
             <form className="adoption-form" onSubmit={handleSubmit}>
-                <h2>Solicitud de Adopción para {animalName || 'un animal'}</h2>
-                <p>Por favor, completa el siguiente formulario para solicitar la adopción.</p>
+                <h2>Solicitud de Adopción para <br /> {animal.name}</h2>
+                <p className="form-description">Por favor, completa el siguiente formulario para solicitar la adopción.</p>
 
+                {formError && <p className="error-message">{formError}</p>}
                 {successMessage && <p className="success-message">{successMessage}</p>}
-                {error && <p className="error-message">{error}</p>}
 
-                {!isLoggedIn && (
-                    <>
-                        <div className="form-group">
-                            <label htmlFor="applicantName">Tu Nombre Completo:</label>
-                            <input
-                                type="text"
-                                id="applicantName"
-                                value={applicantName}
-                                onChange={(e) => setApplicantName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="applicantEmail">Tu Email:</label>
-                            <input
-                                type="email"
-                                id="applicantEmail"
-                                value={applicantEmail}
-                                onChange={(e) => setApplicantEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="applicantPhone">Tu Teléfono:</label>
-                            <input
-                                type="tel"
-                                id="applicantPhone"
-                                value={applicantPhone}
-                                onChange={(e) => setApplicantPhone(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="applicantAddress">Tu Dirección:</label>
-                            <input
-                                type="text"
-                                id="applicantAddress"
-                                value={applicantAddress}
-                                onChange={(e) => setApplicantAddress(e.target.value)}
-                                required
-                            />
-                        </div>
-                    </>
-                )}
-
+                {/* Campos de información del solicitante */}
                 <div className="form-group">
-                    <label htmlFor="motivation">¿Por qué quieres adoptar a {animalName || 'este animal'}? (Tu motivación)</label>
+                    <label htmlFor="applicantName">Nombre:</label>
+                    <input
+                        type="text"
+                        id="applicantName"
+                        value={applicantName}
+                        onChange={(e) => setApplicantName(e.target.value)}
+                        readOnly={isLoggedIn} // Solo lectura si el usuario está logueado
+                        required={!isLoggedIn} // Requerido solo si el usuario NO está logueado
+                        style={{ backgroundColor: isLoggedIn ? '#e9ecef' : 'white' }} // Estilo visual para campos de solo lectura
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="applicantEmail">Email:</label>
+                    <input
+                        type="email"
+                        id="applicantEmail"
+                        value={applicantEmail}
+                        onChange={(e) => setApplicantEmail(e.target.value)}
+                        readOnly={isLoggedIn} // Solo lectura si el usuario está logueado
+                        required={!isLoggedIn} // Requerido solo si el usuario NO está logueado
+                        style={{ backgroundColor: isLoggedIn ? '#e9ecef' : 'white' }}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="applicantPhone">Teléfono:</label>
+                    <input
+                        type="tel"
+                        id="applicantPhone"
+                        value={applicantPhone}
+                        onChange={(e) => setApplicantPhone(e.target.value)}
+                        readOnly={isLoggedIn} // Solo lectura si el usuario está logueado
+                        required={!isLoggedIn} // Requerido solo si el usuario NO está logueado
+                        style={{ backgroundColor: isLoggedIn ? '#e9ecef' : 'white' }}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="applicantAddress">Dirección:</label>
+                    <input
+                        type="text"
+                        id="applicantAddress"
+                        value={applicantAddress}
+                        onChange={(e) => setApplicantAddress(e.target.value)}
+                        readOnly={isLoggedIn} // Solo lectura si el usuario está logueado
+                        required={!isLoggedIn} // Requerido solo si el usuario NO está logueado
+                        style={{ backgroundColor: isLoggedIn ? '#e9ecef' : 'white' }}
+                    />
+                </div>
+
+                {/* Campo de motivación siempre editable */}
+                <div className="form-group">
+                    <label htmlFor="motivation">¿Por qué quieres adoptar a {animal.name}? (Tu motivación)</label>
                     <textarea
                         id="motivation"
                         value={motivation}
                         onChange={(e) => setMotivation(e.target.value)}
-                        rows={6}
+                        rows={5}
                         required
                     ></textarea>
                 </div>
 
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Enviando...' : 'Enviar Solicitud'}
-                </button>
-                <button type="button" onClick={onGoBack} className="go-back-button" disabled={loading}>
-                    Volver
-                </button>
+                <div className="form-actions">
+                    <button type="submit" disabled={loadingSubmit}>
+                        {loadingSubmit ? 'Enviando...' : 'Enviar Solicitud'}
+                    </button>
+                    <button type="button" onClick={handleGoBack} className="go-back-button" disabled={loadingSubmit}>
+                        Volver
+                    </button>
+                </div>
             </form>
         </div>
     );

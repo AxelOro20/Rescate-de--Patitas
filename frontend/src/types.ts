@@ -5,10 +5,11 @@ export interface UserData {
     email: string;
     name: string | null;
     lastname: string | null;
-    phone?: string | null;   // <--- ¡AÑADE O ACTUALIZA ESTA LÍNEA!
-    address?: string | null; // <--- ¡AÑADE O ACTUALIZA ESTA LÍNEA!
+    phone?: string | null;
+    address?: string | null;
     city?: string | null;
     state?: string | null;
     zip_code?: string | null;
     role: string;
+    token?: string; // <--- ¡AÑADIDA! La propiedad del token ahora es opcional
 }

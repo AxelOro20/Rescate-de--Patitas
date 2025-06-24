@@ -12,7 +12,9 @@ const pool = require('./db');
 // Importar los routers de rutas
 const authRoutes = require('./routes/authRoutes');
 const animalRoutes = require('./routes/animalRoutes');
-const adoptionsRoutes = require('./routes/adoptionsRoutes'); // <-- ¡Nueva importación!
+const adoptionsRoutes = require('./routes/adoptionsRoutes');
+const appointmentsRoutes = require('./routes/appointmentsRoutes');
+const userRoutes = require('./routes/userRoutes'); // <-- ¡Nueva importación!
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,7 +31,9 @@ app.get('/', (req, res) => {
 // Usar las rutas modulares
 app.use('/api/auth', authRoutes);
 app.use('/api/animals', animalRoutes);
-app.use('/api/adoptions', adoptionsRoutes); // <-- ¡Nueva integración de rutas!
+app.use('/api/adoptions', adoptionsRoutes);
+app.use('/api/appointments', appointmentsRoutes);
+app.use('/api/users', userRoutes); // <-- ¡Nueva integración de rutas!
 
 
 // Iniciar el servidor

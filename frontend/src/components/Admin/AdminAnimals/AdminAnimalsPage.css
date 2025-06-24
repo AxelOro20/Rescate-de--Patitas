@@ -1,0 +1,467 @@
+/* frontend/src/components/Admin/AdminAnimals/AdminAnimalsPage.css */
+
+.admin-animals-page {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.admin-animals-page.not-authorized {
+    color: #dc3545;
+    padding: 50px 20px;
+}
+
+.admin-animals-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-animals-header h2 {
+    font-size: 2.5em;
+    color: #343a40;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.admin-animals-header p {
+    font-size: 1.1em;
+    color: #6c757d;
+}
+
+.add-animal-button {
+    background-color: #28a745; /* Verde para agregar */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.add-animal-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.loading-message, .error-message, .no-animals-message {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.loading-message { background-color: #e6f7ff; color: #007bff; border: 1px solid #91d5ff; }
+.error-message { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.no-animals-message { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+
+.animals-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.animals-controls .filter-group,
+.animals-controls .search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.animals-controls label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.animals-controls select,
+.animals-controls input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1em;
+    min-width: 180px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.animals-controls select:focus,
+.animals-controls input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.animals-table-container {
+    overflow-x: auto;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fefefe;
+    margin-top: 30px;
+}
+
+.animals-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.animals-table thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.animals-table th, .animals-table td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.animals-table th {
+    font-weight: 600;
+    font-size: 0.95em;
+    white-space: nowrap;
+}
+
+.animals-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.animals-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Nuevos estilos para el badge de estado de adopción */
+.adoption-status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    font-size: 0.85em;
+    display: inline-block;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.adoption-status-badge.status-disponible { background-color: #007bff; }
+.adoption-status-badge.status-en-proceso { background-color: #ffc107; color: #343a40;} /* Amarillo */
+.adoption-status-badge.status-adoptado { background-color: #28a745; } /* Verde */
+
+
+.animal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.action-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.action-button.edit-button {
+    background-color: #17a2b8; /* Cian */
+    color: white;
+}
+.action-button.edit-button:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+}
+
+.action-button.delete-button {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
+.action-button.delete-button:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Estilos para el modal de formulario de animal */
+/* Reutilizamos algunos estilos del modal de usuario, pero podemos ser más específicos */
+.animal-form-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.animal-form-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 700px; /* Un poco más ancho para más campos */
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.animal-form-modal-content h3 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 25px;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.animal-form-modal-content .form-group {
+    margin-bottom: 18px;
+}
+
+.animal-form-modal-content label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.animal-form-modal-content input[type="text"],
+.animal-form-modal-content input[type="number"],
+.animal-form-modal-content textarea,
+.animal-form-modal-content select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.animal-form-modal-content input:focus,
+.animal-form-modal-content textarea:focus,
+.animal-form-modal-content select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.animal-form-modal-content textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.animal-form-modal-content .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.animal-form-modal-content .checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 0;
+}
+
+.animal-form-modal-content .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.animal-form-modal-content .modal-actions button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.animal-form-modal-content .modal-actions button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.animal-form-modal-content .modal-actions button[type="submit"]:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+.animal-form-modal-content .modal-actions button.cancel-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.animal-form-modal-content .modal-actions button.cancel-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+.animal-form-modal-content .modal-actions button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.success-message {
+    color: #28a745;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1em;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1em;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+/* Media Queries para Responsividad */
+@media (max-width: 992px) {
+    .animals-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .animals-controls .filter-group, .animals-controls .search-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .animals-controls select, .animals-controls input {
+        width: 70%;
+    }
+    .add-animal-button {
+        width: 100%;
+    }
+    .animals-table th, .animals-table td {
+        padding: 10px 12px;
+    }
+    .animals-table {
+        font-size: 0.9em;
+    }
+    .adoption-status-badge {
+        font-size: 0.8em;
+        padding: 4px 8px;
+    }
+    .animal-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .action-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-animals-page {
+        padding: 20px;
+    }
+    .admin-animals-header h2 {
+        font-size: 2em;
+    }
+    .animals-table-container {
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    .animals-table {
+        min-width: 600px;
+    }
+    .animal-form-modal-content {
+        padding: 25px;
+        max-width: 95%;
+    }
+    .animal-form-modal-content h3 {
+        font-size: 1.8em;
+    }
+    .animal-form-modal-content label {
+        font-size: 0.95em;
+    }
+    .animal-form-modal-content input,
+    .animal-form-modal-content textarea,
+    .animal-form-modal-content select {
+        font-size: 0.95em;
+    }
+    .animal-form-modal-content .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .animal-form-modal-content .modal-actions button {
+        width: 100%;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-animals-page {
+        padding: 15px;
+    }
+    .admin-animals-header h2 {
+        font-size: 1.8em;
+    }
+    .animals-table-container {
+        padding: 0 15px;
+        margin-left: -15px;
+    }
+    .animals-table th, .animals-table td {
+        font-size: 0.8em;
+        padding: 8px 10px;
+    }
+    .adoption-status-badge {
+        font-size: 0.75em;
+        padding: 3px 6px;
+    }
+    .action-button {
+        font-size: 0.7em;
+        padding: 6px 8px;
+    }
+    .animal-form-modal-content {
+        padding: 20px;
+    }
+    .animal-form-modal-content h3 {
+        font-size: 1.6em;
+    }
+}

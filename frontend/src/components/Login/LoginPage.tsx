@@ -1,17 +1,19 @@
-import React, { useState } from 'react'; // <-- ¡Asegúrate de que useState esté aquí!
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import './AuthForms.css';
-import type { UserData } from '../../types'; // Asegúrate de importar la interfaz UserData
+import type { UserData } from '../../types';
 
 interface LoginPageProps {
     onLoginSuccess: (userData: UserData) => void;
-    onRegisterClick: () => void;
+    // onRegisterClick: () => void; // Ya no se recibe directamente aquí desde App.tsx
 }
 
-function LoginPage({ onLoginSuccess, onRegisterClick }: LoginPageProps) {
+function LoginPage({ onLoginSuccess }: LoginPageProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // Inicializa useNavigate
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,9 +32,10 @@ function LoginPage({ onLoginSuccess, onRegisterClick }: LoginPageProps) {
             const data = await response.json();
 
             if (response.ok) {
-                // Simula guardar el token en localStorage (en un proyecto real, se usa con cuidado)
-                localStorage.setItem('userToken', data.token);
-                onLoginSuccess(data.user); // Llama a la función de éxito en App.tsx
+                // Asumiendo que `data` contiene `{ token: "...", user: { ... } }`
+                const userDataWithToken: UserData = { ...data.user, token: data.token };
+                onLoginSuccess(userDataWithToken); // Llama a la función de éxito en App.tsx
+                // La redirección después del login se maneja en App.tsx según el rol del usuario
             } else {
                 setError(data.message || 'Error al iniciar sesión.');
             }
@@ -73,7 +76,7 @@ function LoginPage({ onLoginSuccess, onRegisterClick }: LoginPageProps) {
                     {loading ? 'Iniciando sesión...' : 'Login'}
                 </button>
                 <p className="auth-switch">
-                    ¿No tienes una cuenta? <span onClick={onRegisterClick}>Regístrate aquí</span>
+                    ¿No tienes una cuenta? <span onClick={() => navigate('/register')} style={{ cursor: 'pointer' }}>Regístrate aquí</span>
                 </p>
             </form>
         </div>

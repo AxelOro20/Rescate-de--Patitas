@@ -1,0 +1,190 @@
+/* frontend/src/pages/SuccessStoriesPage.css */
+
+.success-stories-container {
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Ajusta según tu layout */
+    font-family: 'Inter', sans-serif;
+    color: #343a40;
+    text-align: center;
+}
+
+.success-stories-header {
+    margin-bottom: 40px;
+}
+
+.success-stories-header h2 {
+    font-size: 3em;
+    color: #007bff; /* Un azul vibrante */
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.success-stories-header p {
+    font-size: 1.2em;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.loading-message, .error-message, .no-stories-message {
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px auto;
+    max-width: 600px;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.loading-message {
+    background-color: #e6f7ff;
+    color: #007bff;
+    border: 1px solid #91d5ff;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #dc3545;
+    border: 1px solid #f5c6cb;
+}
+
+.no-stories-message {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.adopted-animals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.adopted-animal-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.adopted-animal-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.adopted-animal-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 Aspect Ratio (3/4 = 0.75) */
+    overflow: hidden;
+    background-color: #e9ecef; /* Placeholder background */
+    display: flex; /* Para centrar la imagen */
+    justify-content: center;
+    align-items: center;
+}
+
+.adopted-animal-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 3px solid #007bff; /* Borde inferior que resalte la imagen */
+}
+
+.adopted-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #28a745; /* Verde para "Adoptado" */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.adopted-animal-info {
+    padding: 20px;
+    flex-grow: 1; /* Para que la información ocupe el espacio restante */
+}
+
+.adopted-animal-info h3 {
+    font-size: 1.8em;
+    color: #343a40;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.adopted-animal-info p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.adopted-animal-info strong {
+    color: #333;
+}
+
+.adoption-message {
+    font-style: italic;
+    color: #007bff; /* Un color que sugiera felicidad */
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 992px) {
+    .success-stories-header h2 {
+        font-size: 2.5em;
+    }
+    .success-stories-header p {
+        font-size: 1.1em;
+    }
+    .adopted-animals-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .success-stories-container {
+        padding: 30px 15px;
+    }
+    .success-stories-header h2 {
+        font-size: 2em;
+    }
+    .success-stories-header p {
+        font-size: 1em;
+    }
+    .adopted-animals-grid {
+        grid-template-columns: 1fr; /* Columna única en móvil */
+        gap: 20px;
+        max-width: 400px; /* Limita el ancho de las tarjetas en móvil */
+    }
+    .adopted-animal-card {
+        padding-bottom: 0; /* Remove extra padding */
+    }
+    .adopted-badge {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+    .adopted-animal-info h3 {
+        font-size: 1.6em;
+    }
+    .adopted-animal-info p {
+        font-size: 0.95em;
+    }
+}

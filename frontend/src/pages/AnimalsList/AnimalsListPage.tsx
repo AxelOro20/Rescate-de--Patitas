@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import './AnimalsListPage.css'; // Crearemos este archivo CSS a continuación
+import { useState, useEffect } from 'react'; // Eliminado 'React' ya que no se usa directamente
+import { useNavigate } from 'react-router-dom';
+import './AnimalsListPage.css';
 
 // Interfaz para la estructura de los animales que vienen del backend
 interface Animal {
@@ -23,7 +24,7 @@ interface Animal {
 // Interfaz para las propiedades de la tarjeta de animal
 interface AnimalCardProps {
     animal: Animal; // Pasamos el objeto animal completo
-    onAdoptClick: (animalId: number) => void;
+    onAdoptClick: (animalId: number) => void; // Función para iniciar la adopción
 }
 
 const AnimalCard = ({ animal, onAdoptClick }: AnimalCardProps) => {
@@ -57,15 +58,18 @@ const AnimalCard = ({ animal, onAdoptClick }: AnimalCardProps) => {
 
 
 // Interfaz de props para el componente principal AnimalsListPage
-interface AnimalsListPageProps {
-    onAdoptClick: (animalId: number) => void; // Recibe la función para ir al formulario de adopción
-    onGoBack: () => void; // Función para volver a la página anterior
-}
+// Ya no es necesaria si no recibe props
+// interface AnimalsListPageProps {
+//     onAdoptClick: (animalId: number) => void;
+//     onGoBack: () => void;
+// }
 
-function AnimalsListPage({ onAdoptClick, onGoBack }: AnimalsListPageProps) {
+// No desestructuramos props aquí si no las usamos
+function AnimalsListPage() {
     const [animals, setAnimals] = useState<Animal[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate(); // Inicializa useNavigate
 
     useEffect(() => {
         const fetchAnimals = async () => {
@@ -92,6 +96,16 @@ function AnimalsListPage({ onAdoptClick, onGoBack }: AnimalsListPageProps) {
         fetchAnimals();
     }, []);
 
+    // Manejador para el botón "Quiero adoptar" en las tarjetas de animales
+    const handleAdoptClick = (animalId: number) => {
+        navigate(`/adopt/${animalId}`);
+    };
+
+    // Manejador para el botón "Volver"
+    const handleGoBack = () => {
+        navigate(-1); // Vuelve a la página anterior
+    };
+
     if (loading) {
         return (
             <div className="animals-list-page-container">
@@ -106,7 +120,7 @@ function AnimalsListPage({ onAdoptClick, onGoBack }: AnimalsListPageProps) {
             <div className="animals-list-page-container">
                 <h2>Error al cargar</h2>
                 <p style={{ color: 'red' }}>{error}</p>
-                <button onClick={onGoBack} className="go-back-button">Volver</button>
+                <button onClick={handleGoBack} className="go-back-button">Volver</button>
             </div>
         );
     }
@@ -116,7 +130,7 @@ function AnimalsListPage({ onAdoptClick, onGoBack }: AnimalsListPageProps) {
             <div className="page-header">
                 <h2>Todos Nuestros Animales Disponibles</h2>
                 <p>¡Explora a nuestros adorables amigos en busca de un hogar!</p>
-                <button onClick={onGoBack} className="go-back-button">Volver a la Página Principal</button>
+                <button onClick={handleGoBack} className="go-back-button">Volver a la Página Principal</button>
             </div>
 
             <div className="animals-list-grid">
@@ -125,7 +139,7 @@ function AnimalsListPage({ onAdoptClick, onGoBack }: AnimalsListPageProps) {
                         <AnimalCard
                             key={animal.id}
                             animal={animal}
-                            onAdoptClick={onAdoptClick}
+                            onAdoptClick={handleAdoptClick}
                         />
                     ))
                 ) : (

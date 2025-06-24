@@ -1,0 +1,158 @@
+/* src/components/Admin/AdminAppointments/AppointmentDetailsModal.css */
+
+.appointment-details-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.appointment-details-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px; /* Ancho máximo para el modal de detalles */
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.appointment-details-modal-content h2 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 25px;
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas para los detalles */
+    gap: 15px 25px;
+    margin-bottom: 30px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.detail-item.full-width {
+    grid-column: 1 / -1; /* Ocupa ambas columnas */
+}
+
+.detail-item strong {
+    color: #495057;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.detail-item span,
+.detail-item p {
+    color: #343a40;
+    font-size: 0.95em;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.detail-item p {
+    white-space: pre-wrap; /* Mantiene saltos de línea y espacios */
+}
+
+.status-badge { /* Reutiliza estilos de AdminAppointmentsPage.css */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.85em;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+/* Colores para los estados de cita (copiados de AdminAppointmentsPage.css) */
+.status-pendiente { background-color: #ffc107; color: #343a40; }
+.status-en-revisi-n { background-color: #fd7e14; color: white; }
+.status-confirmada { background-color: #28a745; color: white; }
+.status-cancelada { background-color: #dc3545; color: white; }
+.status-completada { background-color: #6c757d; color: white; }
+
+
+.close-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    margin-top: 20px;
+    align-self: center;
+}
+
+.close-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .appointment-details-modal-content {
+        padding: 25px;
+        max-width: 95%;
+    }
+
+    .appointment-details-modal-content h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .detail-item {
+        padding: 8px;
+    }
+
+    .detail-item strong {
+        font-size: 0.9em;
+    }
+
+    .detail-item span,
+    .detail-item p {
+        font-size: 0.85em;
+    }
+
+    .close-button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .appointment-details-modal-content {
+        padding: 20px;
+    }
+
+    .appointment-details-modal-content h2 {
+        font-size: 1.6em;
+    }
+}

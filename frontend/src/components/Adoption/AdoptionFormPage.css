@@ -4,9 +4,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1; /* Permite que este elemento crezca y llene el espacio disponible */
+    flex-grow: 1;
     width: 100%;
-    min-height: calc(100vh - 80px - 80px); /* Ajusta si tu header/footer tienen otras alturas */
+    min-height: calc(100vh - 80px - 80px); /* Ajusta según tu header y footer */
     background-color: #e9ecef;
     padding: 30px 20px;
     box-sizing: border-box;
@@ -18,27 +18,28 @@
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     width: 100%;
-    max-width: 600px; /* Un poco más ancho para el formulario de adopción */
+    max-width: 600px; /* Ancho un poco más grande para el formulario */
     box-sizing: border-box;
+    text-align: center; /* Centra el texto del título y descripción */
 }
 
 .adoption-form h2 {
-    text-align: center;
     color: #343a40;
-    margin-bottom: 20px;
-    font-size: 2.2em; /* Ajustado para ser un poco más pequeño que un título de sección */
+    margin-bottom: 10px; /* Espacio entre título y descripción */
+    font-size: 2.8em; /* Título más grande */
     font-weight: 700;
 }
 
-.adoption-form p {
-    text-align: center;
-    color: #6c757d;
-    margin-bottom: 30px;
+.adoption-form .form-description {
     font-size: 1.1em;
+    color: #6c757d;
+    margin-bottom: 30px; /* Espacio antes de los campos */
+    line-height: 1.5;
 }
 
 .form-group {
     margin-bottom: 20px;
+    text-align: left; /* Alinea etiquetas e inputs a la izquierda */
 }
 
 .form-group label {
@@ -46,7 +47,7 @@
     margin-bottom: 8px;
     color: #495057;
     font-weight: 600;
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 .form-group input[type="text"],
@@ -57,12 +58,14 @@
     padding: 12px 15px;
     border: 1px solid #ced4da;
     border-radius: 8px;
-    font-size: 1em;
+    font-size: 1.1em;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
 }
 
-.form-group input:focus,
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
 .form-group textarea:focus {
     border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
@@ -70,50 +73,60 @@
 }
 
 .form-group textarea {
-    resize: vertical; /* Permite redimensionar verticalmente */
+    resize: vertical; /* Permite al usuario redimensionar el textarea verticalmente */
     min-height: 120px;
 }
 
-.adoption-form button[type="submit"] {
-    width: 100%;
-    padding: 15px;
-    background-color: #28a745; /* Un verde para la acción de enviar */
+/* Estilos para campos de solo lectura */
+.form-group input[readOnly],
+.form-group textarea[readOnly] {
+    background-color: #e9ecef; /* Un fondo gris claro para indicar que es de solo lectura */
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+
+.form-actions {
+    display: flex;
+    justify-content: center; /* Centra los botones */
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 30px;
+}
+
+.form-actions button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #28a745; /* Verde para el botón de enviar */
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    margin-top: 25px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-.adoption-form button[type="submit"]:hover {
+.form-actions button[type="submit"]:hover {
     background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-.go-back-button {
-    width: 100%;
-    padding: 15px;
+.form-actions .go-back-button {
     background-color: #6c757d; /* Gris para el botón de volver */
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    margin-top: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-.go-back-button:hover {
+.form-actions .go-back-button:hover {
     background-color: #5a6268;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
+.form-actions button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+}
 
 .error-message {
     color: #dc3545;
@@ -141,50 +154,61 @@
 
 /* Media Queries para Responsividad */
 @media (max-width: 768px) {
+    .adoption-form-container {
+        padding: 20px 15px;
+    }
+
     .adoption-form {
-        padding: 25px;
+        padding: 30px;
         border-radius: 8px;
     }
 
     .adoption-form h2 {
-        font-size: 1.8em;
+        font-size: 2.2em;
+        margin-bottom: 8px;
     }
 
-    .adoption-form p {
+    .adoption-form .form-description {
         font-size: 1em;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
 
     .form-group label {
-        font-size: 0.9em;
+        font-size: 1em;
     }
 
     .form-group input,
     .form-group textarea {
         padding: 10px 12px;
-        font-size: 0.9em;
+        font-size: 1em;
     }
 
-    .adoption-form button {
-        padding: 12px;
+    .form-actions button {
+        padding: 12px 20px;
         font-size: 1.1em;
     }
 }
 
 @media (max-width: 480px) {
     .adoption-form-container {
-        padding: 15px;
+        padding: 15px 10px;
     }
-
     .adoption-form {
         padding: 20px;
     }
 
     .adoption-form h2 {
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
 
-    .adoption-form p {
-        font-size: 0.9em;
+    .form-actions {
+        flex-direction: column; /* Apila los botones en pantallas muy pequeñas */
+        gap: 15px;
+    }
+
+    .form-actions button {
+        width: 100%; /* Botones de ancho completo */
+        padding: 10px 15px;
+        font-size: 1em;
     }
 }

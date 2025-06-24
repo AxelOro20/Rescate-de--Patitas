@@ -1,0 +1,268 @@
+/* src/pages/AnimalDetailPage/AnimalDetailPage.css */
+
+.animal-detail-container {
+    padding: 40px 20px;
+    background-color: #f0f2f5;
+    min-height: calc(100vh - 80px - 80px); /* Ajusta si tu header/footer tienen otras alturas */
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.animal-detail-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que el contenido se envuelva en pantallas pequeñas */
+}
+
+.animal-detail-header h2 {
+    font-size: 3em;
+    color: #343a40;
+    margin-bottom: 10px;
+    font-weight: 700;
+    flex-grow: 1; /* Permite que el título ocupe el espacio */
+    text-align: left; /* Alinea el título a la izquierda */
+}
+
+.animal-detail-content {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las columnas se apilen en pantallas pequeñas */
+    gap: 30px; /* Espacio entre la imagen y la información */
+    margin-top: 20px;
+    background-color: white; /* Fondo para el contenido principal */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.animal-detail-image-gallery {
+    flex: 1; /* Ocupa el espacio disponible */
+    min-width: 300px; /* Ancho mínimo para la galería de imágenes */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.animal-detail-img {
+    width: 100%; /* Las imágenes ocupan todo el ancho del contenedor */
+    max-width: 500px; /* Ancho máximo para imágenes individuales */
+    height: 350px; /* Altura fija para las imágenes */
+    object-fit: cover; /* Cubre el área manteniendo la proporción, recorta si es necesario */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.animal-detail-info {
+    flex: 2; /* Ocupa más espacio que la galería de imágenes */
+    min-width: 300px; /* Ancho mínimo para la información */
+    text-align: left;
+}
+
+.animal-detail-info h3 {
+    font-size: 2.5em;
+    color: #343a40;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-align: left; /* Alinea el título del animal a la izquierda */
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.animal-detail-info p {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.animal-detail-info p strong {
+    color: #333;
+}
+
+.animal-detail-info h4 {
+    font-size: 1.8em;
+    color: #495057;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+.animal-detail-info .status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 10px;
+    text-transform: capitalize;
+}
+
+/* Colores para los estados de adopción */
+.status-disponible { background-color: #28a745; } /* Verde */
+.status-en-proceso { background-color: #ffc107; color: #343a40; } /* Amarillo */
+.status-adoptado { background-color: #6c757d; } /* Gris */
+
+/* Botones */
+.go-back-button {
+    background-color: #6c757d; /* Gris para el botón de volver */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.go-back-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+.cta-button {
+    background-color: #007bff; /* Azul para el CTA de adopción */
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 992px) {
+    .animal-detail-header {
+        flex-direction: column; /* Apila el título y el botón */
+        align-items: center; /* Centra los elementos apilados */
+        text-align: center; /* Centra el título */
+    }
+
+    .animal-detail-header h2 {
+        text-align: center; /* Asegura el centrado en móvil */
+        width: 100%;
+    }
+
+    .animal-detail-content {
+        flex-direction: column; /* Las columnas se apilan */
+        gap: 20px;
+        padding: 25px;
+    }
+
+    .animal-detail-image-gallery,
+    .animal-detail-info {
+        min-width: unset; /* Reinicia el min-width */
+        width: 100%; /* Ocupa todo el ancho disponible */
+        text-align: center; /* Centra el texto en móviles */
+    }
+
+    .animal-detail-info h3,
+    .animal-detail-info p,
+    .animal-detail-info h4 {
+        text-align: center; /* Centra el texto en móviles */
+    }
+
+    .animal-detail-info .status-badge {
+        display: block; /* El badge ocupa su propia línea si es necesario */
+        margin: 10px auto; /* Centra el badge */
+    }
+
+    .cta-button, .go-back-button {
+        width: 100%; /* Botones de ancho completo */
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .animal-detail-container {
+        padding: 30px 15px;
+    }
+
+    .animal-detail-header h2 {
+        font-size: 2.5em;
+    }
+
+    .animal-detail-img {
+        height: 300px;
+    }
+
+    .animal-detail-info h3 {
+        font-size: 2em;
+    }
+
+    .animal-detail-info p {
+        font-size: 1em;
+    }
+
+    .animal-detail-info h4 {
+        font-size: 1.6em;
+    }
+    
+    .cta-button, .go-back-button {
+        font-size: 1.1em;
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .animal-detail-container {
+        padding: 20px 10px;
+    }
+
+    .animal-detail-header h2 {
+        font-size: 2em;
+    }
+
+    .animal-detail-img {
+        height: 250px;
+    }
+
+    .animal-detail-info h3 {
+        font-size: 1.8em;
+    }
+
+    .animal-detail-info h4 {
+        font-size: 1.4em;
+    }
+
+    .cta-button, .go-back-button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+}

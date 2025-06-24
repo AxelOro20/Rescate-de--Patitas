@@ -1,0 +1,220 @@
+/* src/components/Admin/AdminAdoptions/AdminAdoptionsPage.css */
+
+.admin-adoptions-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.admin-adoptions-container.not-authorized {
+    color: #dc3545;
+    padding: 50px 20px;
+}
+
+.admin-adoptions-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-adoptions-header h2 {
+    font-size: 2.5em;
+    color: #343a40;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.admin-adoptions-header p {
+    font-size: 1.1em;
+    color: #6c757d;
+}
+
+.loading-message, .no-adoptions-message, .error-message {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.loading-message { background-color: #e6f7ff; color: #007bff; border: 1px solid #91d5ff; }
+.no-adoptions-message { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.error-message { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+.filters-and-search {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filters-and-search select,
+.filters-and-search input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filters-and-search select:focus,
+.filters-and-search input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.adoptions-table-container {
+    overflow-x: auto;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fefefe;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+table thead {
+    background-color: #343a40;
+    color: white;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+table th {
+    font-weight: 600;
+    font-size: 0.95em;
+    white-space: nowrap;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+table tbody tr:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    font-size: 0.85em;
+    display: inline-block;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+/* Colores de estado (deben coincidir con el backend) */
+.status-pendiente { background-color: #ffc107; color: #343a40; } /* Amarillo */
+.status-en-revision { background-color: #17a2b8; } /* Azul cian */
+.status-aprobada { background-color: #28a745; } /* Verde */
+.status-rechazada { background-color: #dc3545; } /* Rojo */
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.action-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin: 4px;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.action-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.approve-button { background-color: #28a745; color: white; }
+.approve-button:hover { background-color: #218838; }
+
+.reject-button { background-color: #dc3545; color: white; }
+.reject-button:hover { background-color: #c82333; }
+
+.delete-button { background-color: #6c757d; color: white; }
+.delete-button:hover { background-color: #5a6268; }
+
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .filters-and-search {
+        flex-direction: column;
+        align-items: center;
+    }
+    .filters-and-search select,
+    .filters-and-search input[type="text"] {
+        width: 80%;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-adoptions-container {
+        padding: 20px;
+    }
+    .admin-adoptions-header h2 {
+        font-size: 2em;
+    }
+    .filters-and-search select,
+    .filters-and-search input[type="text"] {
+        width: 100%;
+    }
+    table th, table td {
+        padding: 10px 8px;
+        font-size: 0.85em;
+    }
+    .action-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+        margin: 2px;
+    }
+    .status-badge {
+        font-size: 0.75em;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-adoptions-container {
+        padding: 15px;
+    }
+    .admin-adoptions-header h2 {
+        font-size: 1.8em;
+    }
+    table {
+        font-size: 0.8em;
+    }
+    table th, table td {
+        padding: 8px 5px;
+    }
+    .action-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}

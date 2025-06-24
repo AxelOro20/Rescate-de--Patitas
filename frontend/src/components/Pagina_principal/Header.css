@@ -1,45 +1,45 @@
 /* src/components/Pagina_principal/Header.css */
 
 .header {
-    background-color: #343a40;
+    background-color: #343a40; /* Color oscuro, consistente con el wireframe */
     color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    /* No aplicamos padding ni flexbox directo aquí, se moverán al wrapper */
+    width: 100%; /* Asegura que el header ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye padding en el ancho total */
 }
 
+/* Este es el contenedor que CENTRA el contenido del header y lo distribuye */
 .header-content-wrapper {
     display: flex;
-    justify-content: space-between; /* Espacio entre logo, nav y acciones derechas */
-    align-items: center; /* Alinea verticalmente los elementos */
-    max-width: 1200px; /* Misma anchura máxima que el resto de las secciones */
-    margin: 0 auto; /* Centra el contenido del header */
-    padding: 15px 40px; /* Padding interno del wrapper */
-    width: 100%; /* Asegura que ocupe todo el ancho disponible dentro de su max-width */
-    box-sizing: border-box; /* Incluye padding en el ancho total */
+    justify-content: space-between; /* Distribuye el espacio entre logo, nav y acciones */
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    max-width: 1200px; /* Anchura máxima para el contenido central */
+    margin: 0 auto; /* ¡Centra el contenido del header horizontalmente! */
+    padding: 15px 40px; /* Aplica el padding aquí, para el contenido */
+    width: 100%; /* Ocupa todo el ancho disponible dentro del max-width */
+    box-sizing: border-box;
     flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
 }
 
-/* Estilos para la sección del logo */
+/* Estilos para la sección del logo (izquierda) */
 .header-logo {
     display: flex;
     align-items: center;
     margin-right: 30px; /* Espacio entre el logo y la navegación */
 }
 
-/* Estilos para la imagen del logo */
 .logo-img {
-    height: 50px; /* Altura deseada para tu logo */
+    height: 50px; /* Altura de la imagen de tu logo */
     max-width: 150px; /* Ancho máximo para el logo */
     object-fit: contain; /* Asegura que la imagen se ajuste sin distorsionarse */
-    border-radius: 8px; /* Pequeños bordes redondeados para el logo */
+    border-radius: 8px; /* Pequeños bordes redondeados */
 }
 
-
-/* Estilos para la navegación (ahora en el centro) */
+/* Estilos para la navegación (centro) */
 .header-nav {
-    flex-grow: 1; /* Permite que la navegación ocupe el espacio central */
-    text-align: center; /* Centra los elementos de la navegación */
-    margin: 0 20px; /* Margen a los lados de la navegación */
+    flex-grow: 1; /* Permite que la navegación ocupe el espacio central disponible */
+    text-align: center; /* Centra los elementos del menú dentro de la nav */
+    margin: 0 20px; /* Margen a los lados de la navegación, si es necesario */
 }
 
 .header-nav ul {
@@ -48,16 +48,22 @@
     padding: 0;
     display: flex;
     justify-content: center; /* Centra los elementos de la lista de navegación */
-    gap: 25px;
+    gap: 25px; /* Espacio entre los elementos del menú */
+}
+
+.header-nav li {
+    /* Resetea cualquier estilo que pueda interferir con el a */
+    margin: 0;
+    padding: 0;
 }
 
 .header-nav a {
     color: white;
     text-decoration: none;
     font-weight: 600;
-    padding: 5px 0;
+    padding: 5px 0; /* Pequeño padding para el área de clic */
     transition: color 0.3s ease;
-    position: relative;
+    position: relative; /* Para el efecto de subrayado */
 }
 
 .header-nav a::after {
@@ -67,7 +73,7 @@
     height: 2px;
     bottom: -5px;
     left: 0;
-    background-color: #007bff;
+    background-color: #007bff; /* Color del subrayado */
     transition: width 0.3s ease-out;
 }
 
@@ -75,11 +81,11 @@
     width: 100%;
 }
 
-/* Sección de acciones a la derecha (solo login/signup) */
+/* Estilos para la sección de acciones de la derecha (Login/Admin) */
 .header-right-actions {
     display: flex;
     align-items: center;
-    /* Eliminamos el gap ya que solo queda un elemento o el gap no es necesario */
+    gap: 15px; /* Espacio entre el botón de admin y el botón de login */
 }
 
 .login-button {
@@ -89,74 +95,103 @@
     border-radius: 5px;
     color: white;
     font-weight: 600;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    box-shadow: none; /* Eliminar sombra del botón global */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: none; /* Eliminar sombra del botón global si se aplica */
 }
 
 .login-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: #f8f9fa;
-    transform: translateY(0); /* Anular efecto de levantamiento global */
+    transform: translateY(-1px); /* Ligero efecto de levantamiento */
 }
+
+/* Estilo específico para el botón del Panel Admin si es necesario diferenciarlo */
+.login-button.admin-panel-button {
+    background-color: #28a745; /* Un verde para el botón de admin */
+    border-color: #28a745;
+}
+
+.login-button.admin-panel-button:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+/* Estilo para el nuevo botón de cerrar sesión */
+.login-button.logout-button {
+    background-color: #dc3545; /* Un rojo para el botón de cerrar sesión */
+    border-color: #dc3545;
+}
+
+.login-button.logout-button:hover {
+    background-color: #c82333;
+    border-color: #c82333;
+}
+
 
 /* Media Queries para Responsividad */
 @media (max-width: 992px) {
     .header-content-wrapper {
+        flex-direction: column; /* Apila los elementos en columna */
         padding: 15px 20px;
-        flex-wrap: wrap;
-        justify-content: center;
+        align-items: center; /* Centra los elementos apilados */
     }
 
     .header-logo, .header-nav, .header-right-actions {
-        width: 100%;
-        text-align: center;
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-
-    .header-nav ul, .header-right-actions {
-        justify-content: center;
-        margin: 0;
-    }
-}
-
-
-@media (max-width: 768px) {
-    .header-logo .logo-img { /* Ajuste el tamaño del logo para móviles */
-        height: 40px;
-        max-width: 120px;
+        width: 100%; /* Ocupa todo el ancho disponible */
+        text-align: center; /* Centra el texto y los botones */
+        margin-right: 0; /* Elimina márgenes horizontales */
+        margin-bottom: 15px; /* Espacio entre los elementos apilados */
     }
 
     .header-nav ul {
-        flex-direction: column;
+        flex-direction: column; /* Apila los elementos de navegación */
         gap: 10px;
     }
 
     .header-nav a {
-        padding: 8px 0;
+        padding: 8px 0; /* Más padding para los enlaces en móviles */
+    }
+
+    .header-nav a::after {
+        left: 50%; /* Centra el subrayado */
+        transform: translateX(-50%);
+    }
+
+    .header-right-actions {
+        flex-direction: column; /* Apila los botones de login/admin */
+        gap: 10px;
+    }
+
+    .login-button {
+        width: auto; /* Ancho automático para los botones en pantallas medianas */
+        min-width: 150px; /* Ancho mínimo para que no se vean muy pequeños */
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-img { /* Ajusta el tamaño del logo para móviles */
+        height: 40px;
+        max-width: 120px;
+    }
+
+    .header-content-wrapper {
+        padding: 10px 15px;
     }
 }
 
 @media (max-width: 480px) {
-    .header-content-wrapper {
-        padding: 15px 15px;
+    .header-logo {
+        margin-bottom: 10px; /* Menos margen en móviles pequeños */
     }
-
-    .header-logo .logo-img { /* Ajuste aún más para móviles pequeños */
+    .logo-img {
         height: 35px;
         max-width: 100px;
     }
-
     .header-nav ul {
         gap: 8px;
     }
-
     .header-right-actions {
         flex-direction: column;
-        width: 100%;
-    }
-
-    .login-button {
-        width: 100%;
+        gap: 8px;
     }
 }

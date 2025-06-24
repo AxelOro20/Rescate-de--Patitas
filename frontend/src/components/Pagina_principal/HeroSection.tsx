@@ -11,7 +11,7 @@ function HeroSection({ onAdoptClick }: HeroSectionProps) {
         <section className="hero-section">
             <div className="hero-content">
                 <h1>Adopta, Rescata y Ayuda</h1>
-                <p>Rescata un amigo o da refugio a los refugios de animales y a todas las patitas que están en busca de un hogar y una familia</p>
+                <p>Rescata un amigo o da apoyo a los refugios de animales y a todas las patitas que están en busca de un hogar y una familia</p>
                 <button className="cta-button" onClick={onAdoptClick}>Adopta ahora</button>
             </div>
             {/* La imagen de fondo se manejará con CSS */}

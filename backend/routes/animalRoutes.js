@@ -1,11 +1,23 @@
 // backend/routes/animalRoutes.js
 
 const express = require('express');
-const router = express.Router(); // <--- Asegúrate de que Express.Router() esté correcto
+const router = express.Router();
 const pool = require('../db');
-const authenticateToken = require('../middleware/authMiddleware');
+const authenticateToken = require('../middleware/authMiddleware'); // Middleware de autenticación
+const authorizeAdmin = require('../middleware/authorizeAdmin'); // Middleware de autorización (asegúrate de que existe o usa tu versión)
 
-// Obtener todos los animales
+// Middleware para verificar si el usuario es administrador (si no lo tienes en un archivo separado)
+// Si ya tienes authorizeAdmin en middleware/authorizeAdmin.js, puedes eliminar esta función de aquí.
+/*
+function authorizeAdmin(req, res, next) {
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Acceso denegado. Se requiere rol de administrador.' });
+    }
+    next();
+}
+*/
+
+// Obtener todos los animales (Público)
 router.get('/', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM animals ORDER BY created_at DESC');
@@ -16,7 +28,24 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Obtener un animal por ID
+// NUEVA RUTA: Obtener animales adoptados (Casos de Éxito - Público)
+router.get('/adopted', async (req, res) => {
+    try {
+        // Asume que tienes un campo 'adoption_status' en tu tabla 'animals'
+        const result = await pool.query(`
+            SELECT * FROM animals 
+            WHERE adoption_status = 'adoptado' OR adoption_status = 'adopted' 
+            ORDER BY created_at DESC
+        `);
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error('Error al obtener animales adoptados:', err);
+        res.status(500).json({ message: 'Error interno del servidor al obtener casos de éxito.' });
+    }
+});
+
+
+// Obtener un animal por ID (Público)
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -31,9 +60,9 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Crear un nuevo animal (Requiere autenticación)
-router.post('/', authenticateToken, async (req, res) => { // <--- ASEGÚRATE DE QUE ESTA RUTA ESTÉ BIEN
-    const { name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls } = req.body;
+// Crear un nuevo animal (Requiere autenticación y rol de administrador)
+router.post('/', authenticateToken, authorizeAdmin, async (req, res) => {
+    const { name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls, adoption_status } = req.body;
 
     if (!name || !type) {
         return res.status(400).json({ message: 'Nombre y tipo de animal son requeridos.' });
@@ -41,9 +70,9 @@ router.post('/', authenticateToken, async (req, res) => { // <--- ASEGÚRATE DE 
 
     try {
         const newAnimal = await pool.query(
-            `INSERT INTO animals (name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
-            [name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls]
+            `INSERT INTO animals (name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls, adoption_status)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+            [name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls, adoption_status || 'disponible'] // Estado por defecto
         );
         res.status(201).json({ message: 'Animal creado exitosamente.', animal: newAnimal.rows[0] });
     } catch (err) {
@@ -52,17 +81,17 @@ router.post('/', authenticateToken, async (req, res) => { // <--- ASEGÚRATE DE 
     }
 });
 
-// Actualizar un animal existente (Requiere autenticación)
-router.put('/:id', authenticateToken, async (req, res) => {
+// Actualizar un animal existente (Requiere autenticación y rol de administrador)
+router.put('/:id', authenticateToken, authorizeAdmin, async (req, res) => {
     const { id } = req.params;
-    const { name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls } = req.body;
+    const { name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls, adoption_status } = req.body;
 
     try {
         const updatedAnimal = await pool.query(
             `UPDATE animals
-             SET name = $1, type = $2, breed = $3, age_approx = $4, size = $5, gender = $6, description_short = $7, description_long = $8, health_status = $9, is_featured = $10, image_urls = $11, updated_at = CURRENT_TIMESTAMP
-             WHERE id = $12 RETURNING *`,
-            [name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls, id]
+             SET name = $1, type = $2, breed = $3, age_approx = $4, size = $5, gender = $6, description_short = $7, description_long = $8, health_status = $9, is_featured = $10, image_urls = $11, adoption_status = $12, updated_at = CURRENT_TIMESTAMP
+             WHERE id = $13 RETURNING *`,
+            [name, type, breed, age_approx, size, gender, description_short, description_long, health_status, is_featured, image_urls, adoption_status, id]
         );
 
         if (updatedAnimal.rows.length === 0) {
@@ -75,8 +104,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
     }
 });
 
-// Eliminar un animal (Requiere autenticación)
-router.delete('/:id', authenticateToken, async (req, res) => {
+// Eliminar un animal (Requiere autenticación y rol de administrador)
+router.delete('/:id', authenticateToken, authorizeAdmin, async (req, res) => {
     const { id } = req.params;
     try {
         const deletedAnimal = await pool.query('DELETE FROM animals WHERE id = $1 RETURNING *', [id]);
@@ -90,4 +119,4 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 });
 
-module.exports = router; // <--- Asegúrate de que se esté exportando el router
+module.exports = router;
